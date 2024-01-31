@@ -6,6 +6,7 @@ import {
   Text,
   NavLink,
   Loader,
+  Center,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Outlet } from 'react-router-dom'
@@ -45,7 +46,13 @@ function MainLayout() {
         />
       </AppShell.Navbar>
       <AppShell.Main>
-        <Suspense fallback={<Loader />}>
+        <Suspense
+          fallback={
+            <Center>
+              <Loader />
+            </Center>
+          }
+        >
           <Outlet />
         </Suspense>
       </AppShell.Main>

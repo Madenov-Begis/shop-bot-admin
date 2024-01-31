@@ -2,15 +2,15 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 export const http = axios.create({
-  baseURL: 'https://113e-84-54-83-142.ngrok-free.app/admin',
+  baseURL: 'http://192.168.0.195:8000/api/admin',
   headers: {
-    'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
 })
 
 http.interceptors.request.use(
   (config) => {
-    // config.headers.Authorization = `Bearer 5|d4OpSjVVCICohFyhba2loDiV8wltqFjG5TYiilyze6837016`
+    config.headers.Authorization = `Bearer 7|muQB1LiWy32upivTuJPOwCenGjd4B8xEu5lqDh8q6592e187`
     return config
   },
   (error) => {

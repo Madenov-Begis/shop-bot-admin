@@ -15,6 +15,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      retry: false,
     },
   },
 })
@@ -24,7 +25,7 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={theme}>
         <ModalsProvider>
-          <Notifications />
+          <Notifications position='top-right'/>
           <RouterProvider router={router} />
         </ModalsProvider>
       </MantineProvider>

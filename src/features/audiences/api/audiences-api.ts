@@ -1,11 +1,26 @@
 import { http } from '../../../config/http/http'
-import { ResponseWithPayload } from '../../../config/http/types'
+import { ResponseWithData, ResponseWithPayload } from '../../../config/http/types'
 import { Audience, AudienceBody } from '../types/audience'
 
 export const audiencesApi = {
-  getAll: async () => {
-    const { data } = await http<ResponseWithPayload<Audience[]>>(
-      '/uz/audiences'
+  getAll: async (params: {
+    page: number
+    per_page: number
+    search?: string
+  }) => {
+    const { data } = await http<ResponseWithData<Audience[]>>(
+      '/uz/audiences',
+      {
+        params,
+      }
+    )
+
+    return data
+  },
+
+  show: async (audienceId: number) => {
+    const { data } = await http<ResponseWithPayload<Audience>>(
+      `uz/audiences/${audienceId}`
     )
 
     return data
@@ -24,7 +39,7 @@ export const audiencesApi = {
     audienceId,
     body,
   }: {
-    audienceId: number
+    audienceId?: number
     body: AudienceBody
   }) => {
     const { data } = await http.patch<{ message: string }>(
