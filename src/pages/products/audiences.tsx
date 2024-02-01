@@ -1,6 +1,6 @@
 import { MantineReactTable } from 'mantine-react-table'
 import { useState } from 'react'
-import { ActionIcon, Flex, Tooltip, Text } from '@mantine/core'
+import { ActionIcon, Flex, Tooltip, Text, Title } from '@mantine/core'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import { modals } from '@mantine/modals'
 import {
@@ -44,7 +44,13 @@ const Audiences = () => {
 
   return (
     <>
-      <CreateAudience />
+      <Flex justify="space-between" align="center">
+        <Title order={2}>
+          Возрастное ограничение
+        </Title>
+        <CreateAudience />
+      </Flex>
+      
       <MantineReactTable
         columns={columns}
         data={audiences?.data || []}

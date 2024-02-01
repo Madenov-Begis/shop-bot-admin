@@ -4,7 +4,8 @@ import Products from '../../pages/products'
 // import Audiences from '../../pages/audiences/audiences'
 import { lazy } from 'react'
 
-const AudiencesPage = lazy(() => import('../../pages/audiences/audiences'))
+const AudiencesPage = lazy(() => import('../../pages/products/audiences'))
+const CashbacksPage = lazy(() => import('../../pages/products/cashbacks'))
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
       {
         path: 'audiences',
         element: <AudiencesPage />,
+      },
+      {
+        path: 'cashbacks',
+        element: <CashbacksPage />,
       },
     ],
   },

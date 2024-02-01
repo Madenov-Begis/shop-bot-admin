@@ -43,6 +43,15 @@ function MainLayout() {
           bg="#e6e6e6"
           fw={600}
           fz={'lg'}
+          mb={'md'}
+        />
+        <NavLink
+          href="/cashbacks"
+          label={'Кэшбеки'}
+          bg="#e6e6e6"
+          fw={600}
+          fz={'lg'}
+          mb={'md'}
         />
       </AppShell.Navbar>
       <AppShell.Main>

@@ -9,12 +9,12 @@ interface UpdateFromProps {
   submitFunc: (data: AudienceBody) => Promise<unknown>
 }
 
-const initialSate: AudienceBody = {
+const initialState: AudienceBody = {
   age: '',
 }
 
 export const AudineceForm = ({
-  initialValues = initialSate,
+  initialValues = initialState,
   submitFunc,
 }: UpdateFromProps) => {
   const form = useForm<AudienceBody>({

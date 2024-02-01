@@ -1,39 +1,42 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { audiencesApi } from '../api/audiences-api'
+import { cashbacksApi } from '../api/cashbacks-api'
 import { notifications } from '@mantine/notifications'
 import {
   HTTPError,
   ResponseWithData,
   ResponseWithPayload,
 } from '@/config/http/types'
-import { Audience, AudienceBody } from '../types/audience'
+import { Cashback, CashbackBody } from '../types/cashbacks'
 
-const AUDIENCES = 'audiences'
+const CASHBACKS = 'cashbacks'
 
-export const useFetchAudiences = ({
+export const useFetchCashbaks = ({
   page,
-  search,
   per_page,
+  search,
+  lang,
 }: {
   page: number
-  search?: string
   per_page: number
+  search?: string
+  lang?: string
 }) => {
-  return useQuery<ResponseWithData<Audience[]>, HTTPError>({
-    queryKey: [AUDIENCES, page, per_page, search],
-    queryFn: () => audiencesApi.getAll({ page, per_page, search }),
+  return useQuery<ResponseWithData<Cashback[]>, HTTPError>({
+    queryKey: [CASHBACKS, page, per_page, search, lang],
+    queryFn: () => cashbacksApi.getAll({ page, per_page, search, lang }),
     retry: false,
   })
 }
 
-export const useShowAudience = (audienceId: number) => {
-  return useQuery<ResponseWithPayload<Audience>, HTTPError>({
-    queryKey: ['audience', audienceId],
-    queryFn: () => audiencesApi.show(audienceId),
+export const useShowCashback = (cashbackId: number) => {
+  return useQuery<ResponseWithPayload<Cashback>, HTTPError>({
+    queryKey: ['cashback', cashbackId],
+    queryFn: () => cashbacksApi.show(cashbackId),
+    retry: false,
   })
 }
 
-export const useCreateAudience = () => {
+export const useCreateCashback = () => {
   const queryClient = useQueryClient()
 
   return useMutation<
@@ -41,11 +44,11 @@ export const useCreateAudience = () => {
       message: string
     },
     HTTPError,
-    AudienceBody
+    CashbackBody
   >({
-    mutationFn: audiencesApi.create,
+    mutationFn: cashbacksApi.create,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [AUDIENCES] })
+      queryClient.invalidateQueries({ queryKey: [CASHBACKS] })
       notifications.show({
         title: 'Успешно',
         color: 'green',
@@ -55,7 +58,7 @@ export const useCreateAudience = () => {
   })
 }
 
-export const useUpdateAudience = () => {
+export const useUpdateCashback = () => {
   const queryClient = useQueryClient()
 
   return useMutation<
@@ -63,11 +66,11 @@ export const useUpdateAudience = () => {
       message: string
     },
     HTTPError,
-    { audienceId: number; body: AudienceBody }
+    { cashbackId: number; body: CashbackBody }
   >({
-    mutationFn: audiencesApi.update,
+    mutationFn: cashbacksApi.update,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [AUDIENCES] })
+      queryClient.invalidateQueries({ queryKey: [CASHBACKS] })
       notifications.show({
         title: 'Успешно',
         color: 'green',
@@ -77,20 +80,19 @@ export const useUpdateAudience = () => {
   })
 }
 
-export const useDeleteAudience = () => {
+export const useDeleteCashback = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: audiencesApi.delete,
+    mutationFn: cashbacksApi.delete,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [AUDIENCES] })
+      queryClient.invalidateQueries({ queryKey: [CASHBACKS] })
       notifications.show({
         title: 'Успешно',
         color: 'green',
         message: data.message,
       })
-    }, 
-    
+    },
     onError: (err) => {
       notifications.show({
         title: 'Ошибка',
