@@ -11,7 +11,7 @@ import { CashbackBody } from '../types/cashbacks'
 import { HTTPError } from '@/config/http/types'
 import { useFetchLanguages } from '@/config/languages/languages-query'
 import { LangsType } from '@/config/languages/types'
-import { langs } from '@/config/i18n/langs'
+// import { langs } from '@/config/i18n/langs'
 import { ComponentType } from 'react'
 
 interface CashbacksFormProps extends WithLanguagesProps {
@@ -34,7 +34,7 @@ const initialValues = (langs: LangsType[]) => {
 }
 
 const ChashbackForm = ({ submitFunc, data, langs }: CashbacksFormProps) => {
-  console.log(data)
+  // console.log(data)
 
   const form = useForm<CashbackBody>({
     initialValues: data || initialValues(langs!),
@@ -48,6 +48,7 @@ const ChashbackForm = ({ submitFunc, data, langs }: CashbacksFormProps) => {
   })
 
   console.log(form.values)
+  console.log(langs, 'langs')
 
   const handleSubmit = async (data: typeof form.values) => {
     try {

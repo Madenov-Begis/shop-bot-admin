@@ -7,17 +7,22 @@ import {
   NavLink,
   Loader,
   Center,
+  Button,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { Outlet } from 'react-router-dom'
+import { Outlet, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { LangSwitcher } from '../../config/ui'
 import { Suspense } from 'react'
+import { modals } from '@mantine/modals'
+import { useAuth } from '@/features/auth/auth-context/use-auth'
 
 function MainLayout() {
   const { t } = useTranslation()
 
   const [opened, { toggle }] = useDisclosure()
+
+  const { logout } = useAuth()
 
   return (
     <AppShell
@@ -31,27 +36,40 @@ function MainLayout() {
           <Text size="25px" fw={700}>
             E-OBUNA
           </Text>
-          <Flex>
+          <Flex gap="md">
             <LangSwitcher />
+            <Button
+              onClick={() => {
+                modals.openConfirmModal({
+                  children: <div>Вы действительно хотите выйти?</div>,
+                  labels: { confirm: 'Да', cancel: 'Отмена' },
+                  onConfirm: () => logout(),
+                })
+              }}
+            >
+              Выйти
+            </Button>
           </Flex>
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
         <NavLink
-          href="/audiences"
+          to="/audiences"
           label={t('audience')}
           bg="#e6e6e6"
           fw={600}
           fz={'lg'}
           mb={'md'}
+          component={Link}
         />
         <NavLink
-          href="/cashbacks"
+          to="/cashbacks"
           label={'Кэшбеки'}
           bg="#e6e6e6"
           fw={600}
           fz={'lg'}
           mb={'md'}
+          component={Link}
         />
       </AppShell.Navbar>
       <AppShell.Main>

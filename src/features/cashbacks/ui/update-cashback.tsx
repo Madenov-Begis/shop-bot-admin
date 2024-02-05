@@ -2,7 +2,7 @@ import { modals } from '@mantine/modals'
 import {
   useShowCashback,
   useUpdateCashback,
-} from '../queries/cashback-queryies'
+} from '../queries/cashback-queries'
 import { CashbackBody } from '../types/cashbacks'
 import { ChashbackFormWithLangs } from './chashback-form'
 import { Alert, Center, Loader } from '@mantine/core'

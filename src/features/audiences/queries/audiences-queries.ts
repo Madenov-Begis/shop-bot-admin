@@ -22,7 +22,6 @@ export const useFetchAudiences = ({
   return useQuery<ResponseWithData<Audience[]>, HTTPError>({
     queryKey: [AUDIENCES, page, per_page, search],
     queryFn: () => audiencesApi.getAll({ page, per_page, search }),
-    retry: false,
   })
 }
 

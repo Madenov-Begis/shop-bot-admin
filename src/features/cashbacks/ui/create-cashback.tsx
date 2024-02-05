@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { ChashbackFormWithLangs } from './chashback-form'
-import { useCreateCashback } from '../queries/cashback-queryies'
+import { useCreateCashback } from '../queries/cashback-queries'
 import { CashbackBody } from '../types/cashbacks'
 
 export const CreateCashback = () => {

@@ -24,7 +24,6 @@ export const useFetchCashbaks = ({
   return useQuery<ResponseWithData<Cashback[]>, HTTPError>({
     queryKey: [CASHBACKS, page, per_page, search, lang],
     queryFn: () => cashbacksApi.getAll({ page, per_page, search, lang }),
-    retry: false,
   })
 }
 
@@ -32,7 +31,6 @@ export const useShowCashback = (cashbackId: number) => {
   return useQuery<ResponseWithPayload<Cashback>, HTTPError>({
     queryKey: ['cashback', cashbackId],
     queryFn: () => cashbacksApi.show(cashbackId),
-    retry: false,
   })
 }
 

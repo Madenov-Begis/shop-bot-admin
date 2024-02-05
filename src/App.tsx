@@ -25,7 +25,7 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={theme}>
         <ModalsProvider>
-          <Notifications position='top-right'/>
+          <Notifications position="top-right" />
           <RouterProvider router={router} />
         </ModalsProvider>
       </MantineProvider>

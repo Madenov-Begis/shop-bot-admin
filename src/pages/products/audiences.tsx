@@ -1,7 +1,5 @@
-import { MantineReactTable } from 'mantine-react-table'
 import { useState } from 'react'
-import { ActionIcon, Flex, Tooltip, Text, Title } from '@mantine/core'
-import { IconEdit, IconTrash } from '@tabler/icons-react'
+import { Flex, Title } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import {
   useDeleteAudience,
@@ -9,6 +7,7 @@ import {
 } from '@/features/audiences/queries/audiences-queries'
 import { CreateAudience } from '@/features/audiences/ui/create-audience'
 import { AudienceUpdate } from '@/features/audiences/ui/update-audience'
+import { CustomTable } from '@/ui'
 
 const Audiences = () => {
   const [page, setPage] = useState({
@@ -42,85 +41,31 @@ const Audiences = () => {
     },
   ]
 
+  const onClickIcon = (id: number) => {
+    modals.open({
+      children: <AudienceUpdate id={id} />,
+    })
+  }
+
   return (
     <>
       <Flex justify="space-between" align="center">
-        <Title order={2}>
-          Возрастное ограничение
-        </Title>
+        <Title order={2}>Возрастное ограничение</Title>
         <CreateAudience />
       </Flex>
-      
-      <MantineReactTable
+
+      <CustomTable
         columns={columns}
-        data={audiences?.data || []}
-        enableColumnFilters={false}
-        enableFullScreenToggle={false}
-        enableHiding={false}
-        enableSorting={false}
-        enableColumnActions={false}
-        rowCount={audiences?.meta.total}
-        manualPagination={true}
-        onPaginationChange={setPage}
-        manualFiltering={true}
-        onGlobalFilterChange={(value) => {
-          setSearchText(value ?? '')
-        }}
-        enableRowActions={true}
-        renderRowActions={({ row }) => {
-          const audienceId = row.original.id
-          return (
-            <Flex gap="lg">
-              <Tooltip label={'Изменить'}>
-                <ActionIcon
-                  color="orange"
-                  onClick={() => {
-                    modals.open({
-                      children: <AudienceUpdate id={audienceId} />,
-                    })
-                  }}
-                >
-                  <IconEdit />
-                </ActionIcon>
-              </Tooltip>
-              <Tooltip label={'Удалить'}>
-                <ActionIcon
-                  color="red"
-                  onClick={() => {
-                    modals.openConfirmModal({
-                      children: (
-                        <Text size="lg" fw={500} ta="center" mb="md">
-                          Вы действительно хотите удалить?
-                        </Text>
-                      ),
-                      labels: { confirm: 'Да', cancel: 'Отмена' },
-                      onConfirm: () => deleteAudience.mutate(audienceId),
-                    })
-                  }}
-                >
-                  <IconTrash />
-                </ActionIcon>
-              </Tooltip>
-            </Flex>
-          )
-        }}
-        state={{
-          isLoading: isFetching,
-          pagination: page,
-          showAlertBanner: isError,
-          globalFilter: searchText,
-        }}
-        mantineTableProps={{
-          max: '600px',
-        }}
-        mantineToolbarAlertBannerProps={
-          isError
-            ? {
-                color: 'red',
-                children: error.message,
-              }
-            : undefined
-        }
+        data={audiences}
+        page={page}
+        setPage={setPage}
+        search={searchText}
+        setSearch={setSearchText}
+        deleteRow={deleteAudience}
+        isFetching={isFetching}
+        isError={isError}
+        error={error}
+        onClickIcon={onClickIcon}
       />
     </>
   )

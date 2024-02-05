@@ -2,7 +2,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 export const http = axios.create({
-  baseURL: 'http://192.168.0.195:8000/api/admin',
+  baseURL: 'http://192.168.0.191:8000/api/admin',
   headers: {
     'Accept': 'application/json',
   },
@@ -10,7 +10,7 @@ export const http = axios.create({
 
 http.interceptors.request.use(
   (config) => {
-    config.headers.Authorization = `Bearer 7|muQB1LiWy32upivTuJPOwCenGjd4B8xEu5lqDh8q6592e187`
+    config.headers.Authorization = `Bearer 10|xMDDsjQqXlS6uNGC1QELnpuBWjmTb0cI1zqx2Y0lfe9aa8bc`
     return config
   },
   (error) => {
