@@ -4,18 +4,21 @@ import { Suspense } from 'react'
 import { Loader } from '@mantine/core'
 
 export const Auth = () => {
-  //@ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-expect-error
   const { auth } = useLoaderData()
 
   return (
     <Suspense fallback={<Loader />}>
       <Await
         resolve={auth}
-        children={(auth) => (
-          <AuthProvider authored={auth}>
-            <Outlet />
-          </AuthProvider>
-        )}
+        children={(auth) => {
+          return (
+            <AuthProvider authored={auth.isAuth} user={auth.user}>
+              <Outlet />
+            </AuthProvider>
+          )
+        }}
       />
     </Suspense>
   )

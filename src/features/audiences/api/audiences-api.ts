@@ -9,7 +9,7 @@ export const audiencesApi = {
     search?: string
   }) => {
     const { data } = await http<ResponseWithData<Audience[]>>(
-      '/uz/audiences',
+      '/audiences',
       {
         params,
       }
@@ -20,7 +20,7 @@ export const audiencesApi = {
 
   show: async (audienceId: number) => {
     const { data } = await http<ResponseWithPayload<Audience>>(
-      `uz/audiences/${audienceId}`
+      `/audiences/${audienceId}`
     )
 
     return data
@@ -28,7 +28,7 @@ export const audiencesApi = {
 
   create: async (body: AudienceBody) => {
     const { data } = await http.post<{ message: string }>(
-      '/uz/audiences/create',
+      '/audiences/create',
       body
     )
 
@@ -43,7 +43,7 @@ export const audiencesApi = {
     body: AudienceBody
   }) => {
     const { data } = await http.patch<{ message: string }>(
-      `uz/audiences/update/${audienceId}`,
+      `/audiences/update/${audienceId}`,
       body
     )
 
@@ -52,7 +52,7 @@ export const audiencesApi = {
 
   delete: async (audienceId: number) => {
     const { data } = await http.delete<{ message: string }>(
-      `uz/audiences/delete/${audienceId}`
+      `/audiences/delete/${audienceId}`
     )
 
     return data

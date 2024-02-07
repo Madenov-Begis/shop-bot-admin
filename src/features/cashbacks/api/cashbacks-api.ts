@@ -1,5 +1,5 @@
 import { http } from '@/config/http/http'
-import { ResponseWithData, ResponseWithPayload } from '@/config/http/types'
+import { ResponseWithData, ResponseWithPagination } from '@/config/http/types'
 import { CashbackBody, Cashback } from '../types/cashbacks'
 
 export const cashbacksApi = {
@@ -7,21 +7,17 @@ export const cashbacksApi = {
     per_page: number
     search?: string
     page: number
-    lang?: string
   }) => {
-    const { data } = await http<ResponseWithData<Cashback[]>>(
-      `/${params.lang}/cashbacks`,
-      {
-        params,
-      }
-    )
+    const { data } = await http<ResponseWithPagination<Cashback[]>>(`/cashbacks`, {
+      params,
+    })
 
     return data
   },
 
   show: async (cashbackId: number) => {
-    const { data } = await http<ResponseWithPayload<Cashback>>(
-      `/uz/cashbacks/${cashbackId}`
+    const { data } = await http<ResponseWithData<Cashback>>(
+      `/cashbacks/${cashbackId}`
     )
 
     return data
@@ -29,7 +25,7 @@ export const cashbacksApi = {
 
   create: async (body: CashbackBody) => {
     const { data } = await http.post<{ message: string }>(
-      '/uz/cashbacks/create',
+      '/cashbacks/create',
       body
     )
 
@@ -44,7 +40,7 @@ export const cashbacksApi = {
     body: CashbackBody
   }) => {
     const { data } = await http.patch<{ message: string }>(
-      `/uz/cashbacks/update/${cashbackId}`,
+      `/cashbacks/update/${cashbackId}`,
       body
     )
 
@@ -53,7 +49,7 @@ export const cashbacksApi = {
 
   delete: async (cashbackId: number) => {
     const { data } = await http.delete<{ message: string }>(
-      `/uz/cashbacks/delete/${cashbackId}`
+      `/cashbacks/delete/${cashbackId}`
     )
 
     return data

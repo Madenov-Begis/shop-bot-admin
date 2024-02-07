@@ -1,34 +1,64 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  QueryClient,
+  UseQueryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import { cashbacksApi } from '../api/cashbacks-api'
 import { notifications } from '@mantine/notifications'
 import {
   HTTPError,
   ResponseWithData,
-  ResponseWithPayload,
+  ResponseWithPagination,
 } from '@/config/http/types'
 import { Cashback, CashbackBody } from '../types/cashbacks'
+import { useTranslation } from 'react-i18next'
 
 const CASHBACKS = 'cashbacks'
+
+export const useGetLanguage = () => {
+  const { i18n } = useTranslation()
+
+  return i18n.resolvedLanguage
+}
+
+const useQueryWithLang = <
+  TQueryFnData = unknown,
+  TError = unknown,
+  TData = TQueryFnData
+>(
+  options: UseQueryOptions<TQueryFnData, TError, TData>,
+  queryClient?: QueryClient
+) => {
+  const lang = useGetLanguage()
+
+  return useQuery(
+    {
+      ...options,
+      queryKey: [lang, ...options.queryKey],
+    },
+    queryClient
+  )
+}
 
 export const useFetchCashbaks = ({
   page,
   per_page,
   search,
-  lang,
 }: {
   page: number
   per_page: number
   search?: string
-  lang?: string
 }) => {
-  return useQuery<ResponseWithData<Cashback[]>, HTTPError>({
-    queryKey: [CASHBACKS, page, per_page, search, lang],
-    queryFn: () => cashbacksApi.getAll({ page, per_page, search, lang }),
+  return useQueryWithLang<ResponseWithPagination<Cashback[]>, HTTPError>({
+    queryKey: [CASHBACKS, page, per_page, search],
+    queryFn: () => cashbacksApi.getAll({ page, per_page, search }),
   })
 }
 
 export const useShowCashback = (cashbackId: number) => {
-  return useQuery<ResponseWithPayload<Cashback>, HTTPError>({
+  return useQuery<ResponseWithData<Cashback>, HTTPError>({
     queryKey: ['cashback', cashbackId],
     queryFn: () => cashbacksApi.show(cashbackId),
   })

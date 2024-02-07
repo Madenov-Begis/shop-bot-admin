@@ -6,19 +6,12 @@ import { MantineProvider } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { theme } from './config/theme/theme'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider } from 'react-router-dom'
-import { router } from './config/routes'
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: false,
-    },
-  },
-})
+import { queryClient } from '@/shared/config/query-client'
+import { theme } from '@/shared/config/theme'
+import { router } from '@/shared/config/router'
 
 export const App = () => {
   return (

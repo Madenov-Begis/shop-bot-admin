@@ -1,56 +1,60 @@
-import {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  createContext,
-  useState,
-} from 'react'
-import { loginBody } from '../types/auth-types'
-import { AuthApi } from '../api/auth-api'
+import { PropsWithChildren, useState } from 'react'
+import { notifications } from '@mantine/notifications'
+
 import Cookies from 'js-cookie'
-import { useNavigate } from 'react-router-dom'
 
-interface AuthProviderProps {
-  children: ReactNode
+import { AuthContext } from './auth-context'
+
+import { authApi } from '../api/auth-api'
+
+import { User } from '../types/user'
+import { LoginBody } from '../types/login'
+
+import { COOKIES } from '@/shared/constants/cookies'
+
+interface AuthProviderProps extends PropsWithChildren {
   authored: boolean
+  user: User | null
 }
 
-export interface AuthContext {
-  isAuth: boolean
-  login: (body: loginBody) => Promise<void>
-  logout: () => void
-  setIsAuth: Dispatch<SetStateAction<boolean>>
-}
-
-export const AuthContext = createContext<null | AuthContext>(null)
-
-export const AuthProvider = ({ children, authored }: AuthProviderProps) => {
-  const navigate = useNavigate()
+export const AuthProvider = (props: AuthProviderProps) => {
+  const { authored, user, children } = props
 
   const [isAuth, setIsAuth] = useState(authored)
 
-  const login = async (body: loginBody) => {
+  const login = async (body: LoginBody) => {
     try {
-      const { data } = await AuthApi.login(body)
+      const { data } = await authApi.login(body)
 
-      Cookies.set('token', data, {
+      Cookies.set(COOKIES.TOKEN, data.token, {
         expires: 7,
       })
 
       setIsAuth(true)
-      navigate('/', { replace: true })
+      notifications.show({
+        title: 'Успешно',
+        message: data.message,
+        color: 'green',
+      })
     } catch (error) {
       return Promise.reject(error)
     }
   }
 
-  const logout = () => {
-    Cookies.remove('token')
+  const logout = async () => {
+    authApi.logout()
+
+    notifications.show({
+      title: 'Успешно',
+      message: 'Вы вышли из системы',
+      color: 'green',
+    })
+    Cookies.remove(COOKIES.TOKEN)
     setIsAuth(false)
   }
 
   return (
-    <AuthContext.Provider value={{ login, isAuth, setIsAuth, logout }}>
+    <AuthContext.Provider value={{ login, isAuth, logout, user }}>
       {children}
     </AuthContext.Provider>
   )

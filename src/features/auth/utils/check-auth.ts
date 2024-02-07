@@ -1,11 +1,28 @@
 import Cookies from 'js-cookie'
+import { COOKIES } from '@/shared/constants/cookies'
+import { authApi } from '../api/auth-api'
 
-export const CheckAuth = async () => {
-  const token = Cookies.get('token')
+export const checkAuth = async () => {
+  const token = Cookies.get(COOKIES.TOKEN)
 
   if (token) {
-    return true
+    try {
+      const user = await authApi.getMe()
+
+      return {
+        isAuth: true,
+        user,
+      }
+    } catch (error) {
+      return {
+        isAuth: false,
+        user: null,
+      }
+    }
   } else {
-    return false
+    return {
+      isAuth: false,
+      user: null,
+    }
   }
 }
