@@ -1,31 +1,34 @@
-import { http } from '@/config/http/http'
-import { ResponseWithData, ResponseWithPagination } from '@/config/http/types'
-import { CashbackBody, Cashback } from '../types/cashbacks'
+import { http } from '@/shared/config/http'
+import { Cashback, CashbackBody } from '../types/cashbacks'
+import {
+  ResponseWithData,
+  ResponseWithMessage,
+  ResponseWithPagination,
+} from '@/shared/types/http'
+import { ListParams } from '@/shared/types/list-params'
+
+const RESOURCE = '/cashbacks'
 
 export const cashbacksApi = {
-  getAll: async (params: {
-    per_page: number
-    search?: string
-    page: number
-  }) => {
-    const { data } = await http<ResponseWithPagination<Cashback[]>>(`/cashbacks`, {
+  getAll: async (params: ListParams) => {
+    const { data } = await http<ResponseWithPagination<Cashback[]>>(RESOURCE, {
       params,
     })
 
     return data
   },
 
-  show: async (cashbackId: number) => {
+  getOne: async (cashbackId: number) => {
     const { data } = await http<ResponseWithData<Cashback>>(
-      `/cashbacks/${cashbackId}`
+      `${RESOURCE}/${cashbackId}`
     )
 
     return data
   },
 
   create: async (body: CashbackBody) => {
-    const { data } = await http.post<{ message: string }>(
-      '/cashbacks/create',
+    const { data } = await http.post<ResponseWithMessage>(
+      `${RESOURCE}/create`,
       body
     )
 
@@ -39,8 +42,8 @@ export const cashbacksApi = {
     cashbackId: number
     body: CashbackBody
   }) => {
-    const { data } = await http.patch<{ message: string }>(
-      `/cashbacks/update/${cashbackId}`,
+    const { data } = await http.patch<ResponseWithMessage>(
+      `${RESOURCE}/update/${cashbackId}`,
       body
     )
 
@@ -48,8 +51,8 @@ export const cashbacksApi = {
   },
 
   delete: async (cashbackId: number) => {
-    const { data } = await http.delete<{ message: string }>(
-      `/cashbacks/delete/${cashbackId}`
+    const { data } = await http.delete<ResponseWithMessage>(
+      `${RESOURCE}/delete/${cashbackId}`
     )
 
     return data

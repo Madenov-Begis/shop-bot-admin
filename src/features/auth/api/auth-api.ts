@@ -22,7 +22,7 @@ export const authApi = {
   },
 
   logout: async () => {
-    const { data } = await http.post<ResponseWithMessage>('/auth/lgout')
+    const { data } = await http.post<ResponseWithMessage>('/auth/logout')
 
     return data
   },

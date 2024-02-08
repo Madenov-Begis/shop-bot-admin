@@ -14,7 +14,7 @@ export const Auth = () => {
         resolve={auth}
         children={(auth) => {
           return (
-            <AuthProvider authored={auth.isAuth} user={auth.user}>
+            <AuthProvider authored={auth.isAuth} authorizedUser={auth.user}>
               <Outlet />
             </AuthProvider>
           )

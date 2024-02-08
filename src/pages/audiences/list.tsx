@@ -7,7 +7,8 @@ import {
 } from '@/features/audiences/queries/audiences-queries'
 import { CreateAudience } from '@/features/audiences/ui/create-audience'
 import { AudienceUpdate } from '@/features/audiences/ui/update-audience'
-import { CustomTable } from '@/ui'
+import { CustomTable } from '@/shared/ui/custom-table/custom-table'
+import { PageHead } from '@/shared/ui/page-head/page-head'
 
 const AudiencesPage = () => {
   const [page, setPage] = useState({
@@ -49,10 +50,10 @@ const AudiencesPage = () => {
 
   return (
     <>
-      <Flex justify="space-between" align="center">
-        <Title order={2}>Возрастное ограничение</Title>
-        <CreateAudience />
-      </Flex>
+      <PageHead
+        title="Возрастное ограничение"
+        renderButton={<CreateAudience />}
+      />
 
       <CustomTable
         columns={columns}

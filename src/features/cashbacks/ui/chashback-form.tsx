@@ -1,129 +1,100 @@
 import {
-  Alert,
   Button,
   Group,
-  Loader,
   NumberInput,
+  Stack,
+  Text,
   TextInput,
 } from '@mantine/core'
 import { isNotEmpty, useForm } from '@mantine/form'
 import { CashbackBody } from '../types/cashbacks'
-import { HTTPError } from '@/config/http/types'
-import { useFetchLanguages } from '@/config/languages/languages-query'
-import { LangsType } from '@/config/languages/types'
-// import { langs } from '@/config/i18n/langs'
-import { ComponentType } from 'react'
+import { HTTPError } from '@/shared/types/http'
+import { Language } from '@/features/languages/types/language'
+import { initLanguages } from '@/features/languages/lib/init-languages'
+import { withLangs } from '@/features/languages/hoc/with-languages'
 
-interface CashbacksFormProps extends WithLanguagesProps {
-  data?: CashbackBody
-  submitFunc: (data: CashbackBody) => Promise<unknown>
-}
-
-const initialValues = (langs: LangsType[]) => {
+const initialData = (languages: Language[]) => {
   return {
-    name: {
-      ...langs?.reduce((acc, lang) => {
-        return {
-          ...acc,
-          [lang.locale]: '',
-        }
-      }, {}),
-    },
-    percentage: null,
+    name: initLanguages(languages, ''),
+    percentage: undefined,
   }
 }
 
-const ChashbackForm = ({ submitFunc, data, langs }: CashbacksFormProps) => {
-  // console.log(data)
+interface CashbacksFormProps {
+  initialValues?: CashbackBody
+  submitFn: (body: CashbackBody) => Promise<unknown>
+  loading: boolean
+  submitTitle: string
+}
 
-  const form = useForm<CashbackBody>({
-    initialValues: data || initialValues(langs!),
-    validate: {
-      name: {
-        ru: isNotEmpty('Обязательное поле'),
-        uz: isNotEmpty('Обязательное поле'),
+export const ChashbackForm = withLangs<CashbacksFormProps>(
+  ({
+    languages,
+    initialValues = initialData(languages),
+    submitFn,
+    loading,
+    submitTitle,
+  }) => {
+    const form = useForm<CashbackBody>({
+      initialValues,
+      validate: {
+        name: initLanguages(languages, isNotEmpty('Обязательное поле')),
+        percentage: isNotEmpty('Обязательное поле'),
       },
-      percentage: isNotEmpty('Обязательное поле'),
-    },
-  })
+    })
 
-  console.log(form.values)
-  console.log(langs, 'langs')
-
-  const handleSubmit = async (data: typeof form.values) => {
-    try {
-      await submitFunc(data)
-    } catch (error) {
-      const err = error as HTTPError
-
-      if (err.errors) {
-        form.setErrors(err.errors)
+    const handleSubmit = async (data: typeof form.values) => {
+      try {
+        await submitFn(data)
+        form.reset()
+      } catch (error) {
+        const err = error as HTTPError
+        if (err.errors) {
+          form.setErrors(err.errors)
+        }
       }
     }
-  }
 
-  return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      {langs!.map((lang) => {
-        return (
-          <TextInput
-            key={lang.id}
-            label={`Наименование ${lang.name}`}
+    return (
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack>
+          {languages.length > 0 ? (
+            languages.map((language) => {
+              return (
+                <TextInput
+                  key={language.id}
+                  label={`Наименование ${language.locale}`}
+                  withAsterisk
+                  data-autofocus
+                  {...form.getInputProps(`name.${language.locale}`)}
+                />
+              )
+            })
+          ) : (
+            <div>
+              <Text>Вы не добавили язык</Text>
+            </div>
+          )}
+
+          <NumberInput
+            label={'Процент'}
             withAsterisk
-            {...form.getInputProps(`name.${lang.locale}`)}
-            data-autofocus
+            clampBehavior="strict"
+            min={1}
+            max={100}
+            allowNegative={false}
+            suffix="%"
+            hideControls
+            {...form.getInputProps('percentage')}
           />
-        )
-      })}
+        </Stack>
 
-      <NumberInput
-        label={'Процент'}
-        withAsterisk
-        {...form.getInputProps('percentage')}
-        data-autofocus
-        clampBehavior="strict"
-        min={1}
-        max={100}
-        allowNegative={false}
-      />
-
-      <Group justify="flex-end" mt="lg">
-        <Button type="submit">Добавить</Button>
-      </Group>
-    </form>
-  )
-}
-
-interface WithLanguagesProps {
-  langs?: LangsType[]
-}
-
-const withLangs = <T extends WithLanguagesProps = WithLanguagesProps>(
-  Component: ComponentType<T>
-) => {
-  const displayName = Component.displayName || 'Component'
-
-  const ComponentWithLanguages = (props: Omit<T, keyof WithLanguagesProps>) => {
-    const {
-      data: languages,
-      isLoading,
-      isError,
-      isSuccess,
-    } = useFetchLanguages()
-
-    if (isLoading) return <Loader />
-    if (isError)
-      return (
-        <Alert color="red" title="Ошибка">
-          Не удалось загрузить языки
-        </Alert>
-      )
-    if (isSuccess) return <Component {...(props as T)} langs={languages.data} />
+        <Group justify="flex-end" mt="lg">
+          <Button type="submit" disabled={!form.isDirty()} loading={loading}>
+            {submitTitle}
+          </Button>
+        </Group>
+      </form>
+    )
   }
-
-  ComponentWithLanguages.displayName = `withLanguages(${displayName})`
-
-  return ComponentWithLanguages
-}
-
-export const ChashbackFormWithLangs = withLangs(ChashbackForm)
+)

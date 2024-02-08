@@ -1,16 +1,17 @@
-import { Button } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { ChashbackFormWithLangs } from './chashback-form'
+
+import { ChashbackForm } from './chashback-form'
 import { useCreateCashback } from '../queries/cashback-queries'
 import { CashbackBody } from '../types/cashbacks'
 
+import { ErrorAlert } from '@/shared/ui/error-alert/error-alert'
+
 export const CreateCashback = () => {
-  const create = useCreateCashback()
+  const createMutation = useCreateCashback()
 
-  const submitFunc = async (data: CashbackBody) => {
+  const handleSubmit = async (body: CashbackBody) => {
     try {
-      await create.mutateAsync(data)
-
+      await createMutation.mutateAsync(body)
       modals.closeAll()
     } catch (error) {
       return Promise.reject(error)
@@ -18,14 +19,16 @@ export const CreateCashback = () => {
   }
 
   return (
-    <Button
-      onClick={() =>
-        modals.open({
-          children: <ChashbackFormWithLangs submitFunc={submitFunc} />,
-        })
-      }
-    >
-      Добавить
-    </Button>
+    <>
+      {createMutation.isError && !createMutation.error.errors && (
+        <ErrorAlert message={createMutation.error.message} mb="md" />
+      )}
+
+      <ChashbackForm
+        submitFn={handleSubmit}
+        loading={createMutation.isPending}
+        submitTitle="Добавить"
+      />
+    </>
   )
 }

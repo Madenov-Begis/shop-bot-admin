@@ -7,7 +7,7 @@ export interface AuthContext {
   isAuth: boolean
   user: User | null
   login: (body: LoginBody) => Promise<unknown>
-  logout: () => Promise<unknown>
+  logout: () => void
 }
 
 export const AuthContext = createContext<null | AuthContext>(null)

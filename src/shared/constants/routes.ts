@@ -4,4 +4,5 @@ export const ROUTES = {
 
   AUDIENCES: '/audiences',
   CASHBACKS: '/cashbacks',
+  LANGUAGES: '/languages',
 }

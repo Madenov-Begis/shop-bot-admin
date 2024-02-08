@@ -14,6 +14,7 @@ import { AuthLayout } from '@/shared/layouts/auth-layout/auth-layout'
 const LoginPage = lazy(() => import('@/pages/auth/login'))
 const AudiencesPage = lazy(() => import('@/pages/audiences/list'))
 const CashbacksPage = lazy(() => import('@/pages/cashbacks/list'))
+const LanguagesPage = lazy(() => import('@/pages/languages/list'))
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
               {
                 path: ROUTES.CASHBACKS,
                 element: <CashbacksPage />,
+              },
+              {
+                path: ROUTES.LANGUAGES,
+                element: <LanguagesPage />,
               },
             ],
           },

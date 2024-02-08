@@ -1,86 +1,53 @@
 import {
-  QueryClient,
-  UseQueryOptions,
+  keepPreviousData,
   useMutation,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query'
-import { cashbacksApi } from '../api/cashbacks-api'
 import { notifications } from '@mantine/notifications'
+
+import { cashbacksApi } from '../api/cashbacks-api'
+import { Cashback, CashbackBody } from '../types/cashbacks'
 import {
   HTTPError,
   ResponseWithData,
+  ResponseWithMessage,
   ResponseWithPagination,
-} from '@/config/http/types'
-import { Cashback, CashbackBody } from '../types/cashbacks'
-import { useTranslation } from 'react-i18next'
+} from '@/shared/types/http'
+import { ListParams } from '@/shared/types/list-params'
+import { useQueryWithLanguage } from '@/features/languages/hooks/use-query-with-language'
 
 const CASHBACKS = 'cashbacks'
 
-export const useGetLanguage = () => {
-  const { i18n } = useTranslation()
+export const useFetchCashbaks = (params: ListParams) => {
+  const elements = Object.values(params)
 
-  return i18n.resolvedLanguage
-}
-
-const useQueryWithLang = <
-  TQueryFnData = unknown,
-  TError = unknown,
-  TData = TQueryFnData
->(
-  options: UseQueryOptions<TQueryFnData, TError, TData>,
-  queryClient?: QueryClient
-) => {
-  const lang = useGetLanguage()
-
-  return useQuery(
-    {
-      ...options,
-      queryKey: [lang, ...options.queryKey],
-    },
-    queryClient
-  )
-}
-
-export const useFetchCashbaks = ({
-  page,
-  per_page,
-  search,
-}: {
-  page: number
-  per_page: number
-  search?: string
-}) => {
-  return useQueryWithLang<ResponseWithPagination<Cashback[]>, HTTPError>({
-    queryKey: [CASHBACKS, page, per_page, search],
-    queryFn: () => cashbacksApi.getAll({ page, per_page, search }),
+  return useQueryWithLanguage<ResponseWithPagination<Cashback[]>, HTTPError>({
+    queryKey: [CASHBACKS, ...elements],
+    queryFn: () => cashbacksApi.getAll(params),
+    placeholderData: keepPreviousData,
+    staleTime: 30_000,
   })
 }
 
-export const useShowCashback = (cashbackId: number) => {
+export const useFetchCashback = (cashbackId: number) => {
   return useQuery<ResponseWithData<Cashback>, HTTPError>({
     queryKey: ['cashback', cashbackId],
-    queryFn: () => cashbacksApi.show(cashbackId),
+    queryFn: () => cashbacksApi.getOne(cashbackId),
   })
 }
 
 export const useCreateCashback = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<
-    {
-      message: string
-    },
-    HTTPError,
-    CashbackBody
-  >({
+  return useMutation<ResponseWithMessage, HTTPError, CashbackBody>({
     mutationFn: cashbacksApi.create,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [CASHBACKS] })
+      queryClient.invalidateQueries({ queryKey: ['cashbacks'] })
       notifications.show({
         title: 'Успешно',
-        color: 'green',
         message: data.message,
+        color: 'green',
       })
     },
   })
@@ -90,19 +57,18 @@ export const useUpdateCashback = () => {
   const queryClient = useQueryClient()
 
   return useMutation<
-    {
-      message: string
-    },
+    ResponseWithMessage,
     HTTPError,
     { cashbackId: number; body: CashbackBody }
   >({
     mutationFn: cashbacksApi.update,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [CASHBACKS] })
+
       notifications.show({
         title: 'Успешно',
-        color: 'green',
         message: data.message,
+        color: 'green',
       })
     },
   })
@@ -115,16 +81,17 @@ export const useDeleteCashback = () => {
     mutationFn: cashbacksApi.delete,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [CASHBACKS] })
+
       notifications.show({
         title: 'Успешно',
-        color: 'green',
         message: data.message,
+        color: 'green',
       })
     },
-    onError: (err) => {
+    onError: (error) => {
       notifications.show({
         title: 'Ошибка',
-        message: err.message ?? 'Неизвестная ошибка',
+        message: error.message,
         color: 'red',
       })
     },

@@ -1,8 +1,11 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-import { BASE_URL } from '../../constants/base-url'
-import { COOKIES } from '../../constants/cookies'
+import { BASE_URL } from '@/shared/constants/base-url'
+import { COOKIES } from '@/shared/constants/cookies'
+import { LOCALE_STORAGE } from '@/shared/constants/local-storage'
+
+import { languages, DEFAULT_LANGUAGE } from '../languages'
 
 export const http = axios.create({
   baseURL: BASE_URL,
@@ -13,8 +16,17 @@ export const http = axios.create({
 
 http.interceptors.request.use(
   (config) => {
+    const detectedLanguage = localStorage
+      .getItem(LOCALE_STORAGE.I18NEXT_LNG)
+      ?.slice(0, 2)
+      .toLowerCase()
+
+    const foundLanguage = Object.keys(languages).find(
+      (language) => language === detectedLanguage
+    )
+
     config.headers.Authorization = `Bearer ${Cookies.get(COOKIES.TOKEN)}`
-    config.headers['X-Language'] = localStorage.getItem('i18nextLng')
+    config.headers['X-Language'] = foundLanguage || DEFAULT_LANGUAGE
     return config
   },
   (error) => {
@@ -27,7 +39,7 @@ http.interceptors.response.use(
   (error) => {
     if (error.response) {
       if (error.response.status === 401) {
-        // Cookies.remove(COOKIES.TOKEN)
+        Cookies.remove(COOKIES.TOKEN)
         return Promise.reject({
           message: error.response.data.message,
         })
@@ -36,6 +48,6 @@ http.interceptors.response.use(
       return Promise.reject(error.response.data)
     }
 
-    return Promise.reject({ message: error })
+    return Promise.reject({ message: error.message || 'Unknown error' })
   }
 )

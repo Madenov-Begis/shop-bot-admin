@@ -23,4 +23,9 @@ export const sidebarLinks: SidebarLink[] = [
     link: ROUTES.CASHBACKS,
     label: 'Кешбэк',
   },
+  {
+    id: nanoid(),
+    link: ROUTES.LANGUAGES,
+    label: 'Языки',
+  },
 ]

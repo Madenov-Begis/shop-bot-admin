@@ -14,43 +14,46 @@ import { COOKIES } from '@/shared/constants/cookies'
 
 interface AuthProviderProps extends PropsWithChildren {
   authored: boolean
-  user: User | null
+  authorizedUser: User | null
 }
 
 export const AuthProvider = (props: AuthProviderProps) => {
-  const { authored, user, children } = props
+  const { authored, authorizedUser, children } = props
 
   const [isAuth, setIsAuth] = useState(authored)
+  const [user, setUser] = useState<User | null>(authorizedUser)
 
   const login = async (body: LoginBody) => {
     try {
       const { data } = await authApi.login(body)
-
       Cookies.set(COOKIES.TOKEN, data.token, {
         expires: 7,
       })
 
-      setIsAuth(true)
       notifications.show({
         title: 'Успешно',
         message: data.message,
         color: 'green',
       })
+
+      setIsAuth(true)
+      setUser(data.user)
     } catch (error) {
       return Promise.reject(error)
     }
   }
 
-  const logout = async () => {
-    authApi.logout()
-
-    notifications.show({
-      title: 'Успешно',
-      message: 'Вы вышли из системы',
-      color: 'green',
+  const logout = () => {
+    authApi.logout().finally(() => {
+      notifications.show({
+        title: 'Успешно',
+        message: 'Вы вышли из системы',
+        color: 'green',
+      })
+      Cookies.remove(COOKIES.TOKEN)
+      setIsAuth(false)
+      setUser(null)
     })
-    Cookies.remove(COOKIES.TOKEN)
-    setIsAuth(false)
   }
 
   return (

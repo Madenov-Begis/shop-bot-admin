@@ -1,12 +1,14 @@
+import { FieldWithLanguages } from '@/features/languages/types/field-with-langagues'
+
 export interface Cashback {
   id: number
-  name: Record<string, string>
+  name: FieldWithLanguages
   percentage: number
   created_at: string
   updated_at: string
 }
 
 export interface CashbackBody {
-  name: Record<string, string>
-  percentage: number | null
+  name: FieldWithLanguages
+  percentage: number | undefined
 }

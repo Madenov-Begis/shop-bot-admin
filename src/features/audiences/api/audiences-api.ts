@@ -1,5 +1,5 @@
-import { http } from '../../../config/http/http'
-import { ResponseWithData, ResponseWithPayload } from '../../../config/http/types'
+import { http } from '@/shared/config/http'
+import { ResponseWithData, ResponseWithMessage } from '@/shared/types/http'
 import { Audience, AudienceBody } from '../types/audience'
 
 export const audiencesApi = {
@@ -8,18 +8,15 @@ export const audiencesApi = {
     per_page: number
     search?: string
   }) => {
-    const { data } = await http<ResponseWithData<Audience[]>>(
-      '/audiences',
-      {
-        params,
-      }
-    )
+    const { data } = await http<ResponseWithData<Audience[]>>('/audiences', {
+      params,
+    })
 
     return data
   },
 
   show: async (audienceId: number) => {
-    const { data } = await http<ResponseWithPayload<Audience>>(
+    const { data } = await http<ResponseWithData<Audience>>(
       `/audiences/${audienceId}`
     )
 
@@ -27,7 +24,7 @@ export const audiencesApi = {
   },
 
   create: async (body: AudienceBody) => {
-    const { data } = await http.post<{ message: string }>(
+    const { data } = await http.post<ResponseWithMessage>(
       '/audiences/create',
       body
     )
@@ -42,7 +39,7 @@ export const audiencesApi = {
     audienceId?: number
     body: AudienceBody
   }) => {
-    const { data } = await http.patch<{ message: string }>(
+    const { data } = await http.patch<ResponseWithMessage>(
       `/audiences/update/${audienceId}`,
       body
     )
@@ -51,7 +48,7 @@ export const audiencesApi = {
   },
 
   delete: async (audienceId: number) => {
-    const { data } = await http.delete<{ message: string }>(
+    const { data } = await http.delete<ResponseWithMessage>(
       `/audiences/delete/${audienceId}`
     )
 

@@ -20,14 +20,9 @@ export const CreateAudience = () => {
   return (
     <>
       <Button
-        mb="lg"
         onClick={() =>
           modals.open({
-            children: (
-              <AudineceForm
-                submitFunc={submitFunc}
-              />
-            ),
+            children: <AudineceForm submitFunc={submitFunc} />,
           })
         }
       >

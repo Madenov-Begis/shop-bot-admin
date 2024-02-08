@@ -15,7 +15,6 @@ export interface ResponseWithMessage extends Response {
 export interface ResponseWithPagination<T> extends ResponseWithData<T> {
   meta: {
     total: number
-    per_page: number
   }
 }
 

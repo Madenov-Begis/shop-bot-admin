@@ -14,8 +14,8 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 
 import { Logout } from '@/features/auth/ui/logout'
-import { LangSwitcher } from '@/shared/ui'
 import { Sidebar } from './sidebar'
+import { LangSwitcher } from '@/features/languages/ui/lang-switcher'
 
 export const MainLayout = () => {
   const [opened, { close, open }] = useDisclosure()

@@ -14,8 +14,8 @@ export const LoginForm = () => {
 
   const form = useForm({
     initialValues: {
-      phone: '',
-      password: '',
+      phone: import.meta.env.VITE_PHONE || '',
+      password: import.meta.env.VITE_PASSWORD || '',
     },
     validate: {
       phone: hasLength({ min: 9 }, 'Обязательное поле'),
