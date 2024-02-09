@@ -1,16 +1,20 @@
 import { http } from '@/shared/config/http'
-import { ResponseWithData, ResponseWithMessage } from '@/shared/types/http'
+import {
+  ResponseWithData,
+  ResponseWithMessage,
+  ResponseWithPagination,
+} from '@/shared/types/http'
 import { Audience, AudienceBody } from '../types/audience'
+import { ListParams } from '@/shared/types/list-params'
 
 export const audiencesApi = {
-  getAll: async (params: {
-    page: number
-    per_page: number
-    search?: string
-  }) => {
-    const { data } = await http<ResponseWithData<Audience[]>>('/audiences', {
-      params,
-    })
+  getAll: async (params: ListParams) => {
+    const { data } = await http<ResponseWithPagination<Audience[]>>(
+      '/audiences',
+      {
+        params,
+      }
+    )
 
     return data
   },

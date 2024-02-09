@@ -1,7 +1,7 @@
 import { Button, Group, TextInput } from '@mantine/core'
 import { isNotEmpty, useForm } from '@mantine/form'
 import { AudienceBody } from '../types/audience'
-import { HTTPError } from '@/config/http/types'
+import { HTTPError } from '@/shared/types/http'
 
 interface UpdateFromProps {
   initialValues?: AudienceBody

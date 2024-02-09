@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { Flex, Title } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import {
   useDeleteAudience,
@@ -7,15 +5,22 @@ import {
 } from '@/features/audiences/queries/audiences-queries'
 import { CreateAudience } from '@/features/audiences/ui/create-audience'
 import { AudienceUpdate } from '@/features/audiences/ui/update-audience'
-import { CustomTable } from '@/shared/ui/custom-table/custom-table'
 import { PageHead } from '@/shared/ui/page-head/page-head'
+import { Table } from '@/shared/ui/table/table'
+import { useListParams } from '@/shared/hooks/user-list-params'
+import { MODALS } from '@/shared/ui/custom-modals/modals'
 
 const AudiencesPage = () => {
-  const [page, setPage] = useState({
-    pageIndex: 0,
-    pageSize: 5,
-  })
-  const [searchText, setSearchText] = useState('')
+  const {
+    sorting,
+    globalFilter,
+    pagination,
+    orderby,
+    sort,
+    setGlobalFilter,
+    setPagination,
+    setSorting,
+  } = useListParams()
 
   const {
     data: audiences,
@@ -23,12 +28,13 @@ const AudiencesPage = () => {
     isError,
     error,
   } = useFetchAudiences({
-    page: page.pageIndex + 1,
-    search: searchText,
-    per_page: page.pageSize,
+    page: pagination.pageIndex + 1,
+    per_page: pagination.pageSize,
+    search: globalFilter,
+    orderby,
+    sort,
   })
-
-  const deleteAudience = useDeleteAudience()
+  const deleteMutation = useDeleteAudience()
 
   const columns = [
     {
@@ -42,9 +48,23 @@ const AudiencesPage = () => {
     },
   ]
 
-  const onClickIcon = (id: number) => {
+  const handleUpdate = (id: number) => {
     modals.open({
+      title: 'Редактирование возрастного ограничения',
       children: <AudienceUpdate id={id} />,
+    })
+  }
+
+  const handleDelete = (id: number) => {
+    modals.openContextModal({
+      modal: MODALS.CONFIRM_DIALOG,
+      title: 'Подтвердите действие',
+      innerProps: {
+        text: 'Вы действительно хотите удалить это возрастное ограничение?',
+        onConfirm: (modalId: string) => {
+          deleteMutation.mutateAsync(id).finally(() => modals.close(modalId))
+        },
+      },
     })
   }
 
@@ -55,18 +75,29 @@ const AudiencesPage = () => {
         renderButton={<CreateAudience />}
       />
 
-      <CustomTable
+      <Table
+        data={audiences?.data ?? []}
         columns={columns}
-        data={audiences}
-        page={page}
-        setPage={setPage}
-        search={searchText}
-        setSearch={setSearchText}
-        deleteRow={deleteAudience}
-        isFetching={isFetching}
+        onUpdate={handleUpdate}
+        onDelete={handleDelete}
+        state={{
+          isLoading: isFetching,
+          showAlertBanner: isError,
+          pagination,
+          globalFilter,
+          sorting,
+        }}
         isError={isError}
-        error={error}
-        onClickIcon={onClickIcon}
+        errorText={error?.message ?? 'Unknown Error'}
+        manualSorting={true}
+        manualFiltering={true}
+        manualPagination={true}
+        onSortingChange={setSorting}
+        onGlobalFilterChange={(value) => {
+          setGlobalFilter(value ?? '')
+        }}
+        onPaginationChange={setPagination}
+        rowCount={audiences?.meta.total}
       />
     </>
   )

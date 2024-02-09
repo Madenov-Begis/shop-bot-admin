@@ -1,6 +1,8 @@
 import { lazy } from 'react'
 import { createBrowserRouter, defer } from 'react-router-dom'
 
+import { AppProvider } from '@/providers/app-provider'
+
 import { Auth } from '@/features/auth/ui/auth'
 import { ProtectedRoutes } from '@/features/auth/ui/protected-routes'
 import { AuthRoute } from '@/features/auth/ui/auth-route'
@@ -18,41 +20,46 @@ const LanguagesPage = lazy(() => import('@/pages/languages/list'))
 
 export const router = createBrowserRouter([
   {
-    element: <Auth />,
-    loader: () => defer({ auth: checkAuth() }),
+    element: <AppProvider />,
     children: [
       {
-        element: <ProtectedRoutes />,
+        element: <Auth />,
+        loader: () => defer({ auth: checkAuth() }),
         children: [
           {
-            path: ROUTES.HOME,
-            element: <MainLayout />,
+            element: <ProtectedRoutes />,
             children: [
               {
-                path: ROUTES.AUDIENCES,
-                element: <AudiencesPage />,
-              },
-              {
-                path: ROUTES.CASHBACKS,
-                element: <CashbacksPage />,
-              },
-              {
-                path: ROUTES.LANGUAGES,
-                element: <LanguagesPage />,
+                path: ROUTES.HOME,
+                element: <MainLayout />,
+                children: [
+                  {
+                    path: ROUTES.AUDIENCES,
+                    element: <AudiencesPage />,
+                  },
+                  {
+                    path: ROUTES.CASHBACKS,
+                    element: <CashbacksPage />,
+                  },
+                  {
+                    path: ROUTES.LANGUAGES,
+                    element: <LanguagesPage />,
+                  },
+                ],
               },
             ],
           },
-        ],
-      },
-      {
-        element: <AuthRoute />,
-        children: [
           {
-            element: <AuthLayout />,
+            element: <AuthRoute />,
             children: [
               {
-                path: ROUTES.LOGIN,
-                element: <LoginPage />,
+                element: <AuthLayout />,
+                children: [
+                  {
+                    path: ROUTES.LOGIN,
+                    element: <LoginPage />,
+                  },
+                ],
               },
             ],
           },

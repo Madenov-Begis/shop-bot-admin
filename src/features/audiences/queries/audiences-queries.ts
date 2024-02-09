@@ -1,32 +1,27 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { audiencesApi } from '../api/audiences-api'
 import { notifications } from '@mantine/notifications'
+import { Audience, AudienceBody } from '../types/audience'
 import {
   HTTPError,
   ResponseWithData,
-  ResponseWithPayload,
-} from '@/config/http/types'
-import { Audience, AudienceBody } from '../types/audience'
+  ResponseWithPagination,
+} from '@/shared/types/http'
+import { ListParams } from '@/shared/types/list-params'
 
 const AUDIENCES = 'audiences'
 
-export const useFetchAudiences = ({
-  page,
-  search,
-  per_page,
-}: {
-  page: number
-  search?: string
-  per_page: number
-}) => {
-  return useQuery<ResponseWithData<Audience[]>, HTTPError>({
-    queryKey: [AUDIENCES, page, per_page, search],
-    queryFn: () => audiencesApi.getAll({ page, per_page, search }),
+export const useFetchAudiences = (params: ListParams) => {
+  const elements = Object.keys(params)
+
+  return useQuery<ResponseWithPagination<Audience[]>, HTTPError>({
+    queryKey: [AUDIENCES, ...elements],
+    queryFn: () => audiencesApi.getAll(params),
   })
 }
 
 export const useShowAudience = (audienceId: number) => {
-  return useQuery<ResponseWithPayload<Audience>, HTTPError>({
+  return useQuery<ResponseWithData<Audience>, HTTPError>({
     queryKey: ['audience', audienceId],
     queryFn: () => audiencesApi.show(audienceId),
   })
@@ -88,8 +83,8 @@ export const useDeleteAudience = () => {
         color: 'green',
         message: data.message,
       })
-    }, 
-    
+    },
+
     onError: (err) => {
       notifications.show({
         title: 'Ошибка',

@@ -1,10 +1,10 @@
-import { http } from '@/config/http/http'
-import { ResponseWithData } from '@/config/http/types'
+import { http } from '@/shared/config/http'
 import { Catalog, CatalogBody } from '../types/catalog-type'
+import { ResponseWithPagination } from '@/shared/types/http'
 
 export const CatalogApi = {
   getAll: async () => {
-    const { data } = await http<ResponseWithData<Catalog[]>>(`/catalogs`)
+    const { data } = await http<ResponseWithPagination<Catalog[]>>(`/catalogs`)
 
     return data
   },

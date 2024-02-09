@@ -3,19 +3,13 @@ import {
   useFetchCashbaks,
 } from '@/features/cashbacks/queries/cashback-queries'
 import { CreateCashback } from '@/features/cashbacks/ui/create-cashback'
-import { UpdateCashback } from '@/features/cashbacks/ui/update-cashback'
 import { ActionIcon, Flex, Tooltip, Text, Title } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import { MantineReactTable } from 'mantine-react-table'
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 const CashbacksPage = () => {
-  const { i18n } = useTranslation()
-
-  const lang = i18n.resolvedLanguage
-
   const [page, setPage] = useState({
     pageIndex: 0,
     pageSize: 5,
@@ -31,7 +25,6 @@ const CashbacksPage = () => {
     page: page.pageIndex,
     per_page: page.pageSize,
     search,
-    lang,
   })
 
   const deleteCashback = useDeleteCashback()
@@ -84,7 +77,7 @@ const CashbacksPage = () => {
                   color="orange"
                   onClick={() => {
                     modals.open({
-                      children: <UpdateCashback id={cashbackId} />,
+                      children: <div>{cashbackId}</div>,
                     })
                   }}
                 >
