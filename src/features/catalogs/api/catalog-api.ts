@@ -1,22 +1,26 @@
 import { http } from '@/shared/config/http'
 import { Catalog, CatalogBody } from '../types/catalog-type'
-import { ResponseWithPagination } from '@/shared/types/http'
+import { ResponseWithData, ResponseWithMessage, ResponseWithPagination } from '@/shared/types/http'
+import { ListParams } from '@/shared/types/list-params'
 
-export const CatalogApi = {
-  getAll: async () => {
-    const { data } = await http<ResponseWithPagination<Catalog[]>>(`/catalogs`)
+export const catalogApi = {
+  getAll: async (params: ListParams) => {
+    const { data } = await http<ResponseWithPagination<Catalog[]>>(
+      `/catalogs`,
+      { params }
+    )
 
     return data
   },
 
   getDetail: async (catalogId: number) => {
-    const { data } = await http(`/catalogs/${catalogId}`)
+    const { data } = await http<ResponseWithData<Catalog>>(`/catalogs/${catalogId}`)
 
     return data
   },
 
   create: async (body: CatalogBody) => {
-    const { data } = await http.post<{ message: string }>(
+    const { data } = await http.post<ResponseWithMessage>(
       '/catalogs/create',
       body
     )
@@ -24,20 +28,20 @@ export const CatalogApi = {
     return data
   },
 
-  update: async ({
+   update: async ({
     cashbackId,
     body,
   }: {
     cashbackId: number
     body: CatalogBody
   }) => {
-    const { data } = await http.post(`/catalogs/update/${cashbackId}`, body)
+    const { data } = await http.patch<ResponseWithMessage>(`/catalogs/update/${cashbackId}`, body)
 
     return data
   },
 
   delete: async (catalogId: number) => {
-    const { data } = await http(`/catalogs/delete/${catalogId}`)
+    const { data } = await http<ResponseWithMessage>(`/catalogs/delete/${catalogId}`)
 
     return data
   },

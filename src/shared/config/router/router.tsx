@@ -17,6 +17,7 @@ const LoginPage = lazy(() => import('@/pages/auth/login'))
 const AudiencesPage = lazy(() => import('@/pages/audiences/list'))
 const CashbacksPage = lazy(() => import('@/pages/cashbacks/list'))
 const LanguagesPage = lazy(() => import('@/pages/languages/list'))
+const CatalogsPage = lazy(() => import('@/pages/catalogs/list'))
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
                   {
                     path: ROUTES.LANGUAGES,
                     element: <LanguagesPage />,
+                  },
+                  {
+                    path: ROUTES.CATALOGS,
+                    element: <CatalogsPage />,
                   },
                 ],
               },

@@ -1,10 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import { audiencesApi } from '../api/audiences-api'
 import { notifications } from '@mantine/notifications'
 import { Audience, AudienceBody } from '../types/audience'
 import {
   HTTPError,
   ResponseWithData,
+  ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
 import { ListParams } from '@/shared/types/list-params'
@@ -17,26 +23,22 @@ export const useFetchAudiences = (params: ListParams) => {
   return useQuery<ResponseWithPagination<Audience[]>, HTTPError>({
     queryKey: [AUDIENCES, ...elements],
     queryFn: () => audiencesApi.getAll(params),
+    placeholderData: keepPreviousData,
+    staleTime: 30_000,
   })
 }
 
 export const useShowAudience = (audienceId: number) => {
   return useQuery<ResponseWithData<Audience>, HTTPError>({
     queryKey: ['audience', audienceId],
-    queryFn: () => audiencesApi.show(audienceId),
+    queryFn: () => audiencesApi.getOne(audienceId),
   })
 }
 
 export const useCreateAudience = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<
-    {
-      message: string
-    },
-    HTTPError,
-    AudienceBody
-  >({
+  return useMutation<ResponseWithMessage, HTTPError, AudienceBody>({
     mutationFn: audiencesApi.create,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [AUDIENCES] })
@@ -53,9 +55,7 @@ export const useUpdateAudience = () => {
   const queryClient = useQueryClient()
 
   return useMutation<
-    {
-      message: string
-    },
+    ResponseWithMessage,
     HTTPError,
     { audienceId: number; body: AudienceBody }
   >({

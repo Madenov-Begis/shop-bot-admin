@@ -19,7 +19,7 @@ export const audiencesApi = {
     return data
   },
 
-  show: async (audienceId: number) => {
+  getOne: async (audienceId: number) => {
     const { data } = await http<ResponseWithData<Audience>>(
       `/audiences/${audienceId}`
     )
