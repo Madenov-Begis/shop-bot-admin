@@ -1,13 +1,16 @@
 import { useListParams } from '@/shared/hooks/user-list-params'
-import { useDeleteCatalog, useFetchCatalogs } from '../queries/catalog-queries'
-import { MRT_ColumnDef } from 'mantine-react-table'
-import { Catalog } from '../types/catalog-type'
 import { Table } from '@/shared/ui/table/table'
+import {
+  useDeleteCategory,
+  useFetchCategories,
+} from '../queries/category-queries'
+import { MRT_ColumnDef } from 'mantine-react-table'
+import { Category } from '../types/category'
 import { modals } from '@mantine/modals'
-import { UpdateCatalog } from './update-catalog'
+import { UpdateCategory } from './update-category'
 import { MODALS } from '@/shared/ui/custom-modals/modals'
 
-export const CatalogsList = () => {
+export const CategoriesList = () => {
   const {
     sorting,
     globalFilter,
@@ -24,7 +27,7 @@ export const CatalogsList = () => {
     isFetching,
     isError,
     error,
-  } = useFetchCatalogs({
+  } = useFetchCategories({
     page: pagination.pageIndex + 1,
     per_page: pagination.pageSize,
     orderby,
@@ -32,9 +35,9 @@ export const CatalogsList = () => {
     sort,
   })
 
-  const deleteMutation = useDeleteCatalog()
+  const deleteMutation = useDeleteCategory()
 
-  const columns: MRT_ColumnDef<Catalog>[] = [
+  const columns: MRT_ColumnDef<Category>[] = [
     {
       accessorKey: 'id',
       header: 'ID',
@@ -57,11 +60,10 @@ export const CatalogsList = () => {
 
   const handleUpdate = (id: number) => {
     modals.open({
-      title: 'Редактирование каталога',
-      children: <UpdateCatalog catalogId={id} />,
+      title: 'Редактирование кэшбека',
+      children: <UpdateCategory categoryId={id} />,
     })
   }
-
   const handleDelete = (id: number) => {
     modals.openContextModal({
       modal: MODALS.CONFIRM_DIALOG,
@@ -80,7 +82,7 @@ export const CatalogsList = () => {
       data={catalogs?.data ?? []}
       columns={columns}
       onUpdate={handleUpdate}
-        onDelete={handleDelete}
+      onDelete={handleDelete}
       state={{
         isLoading: isFetching,
         showAlertBanner: isError,
@@ -99,6 +101,8 @@ export const CatalogsList = () => {
       }}
       onPaginationChange={setPagination}
       rowCount={catalogs?.meta.total}
+      enableExpanding={true}
+      getSubRows={(originalRow) => originalRow.childrens}
     />
   )
 }

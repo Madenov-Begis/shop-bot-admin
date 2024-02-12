@@ -29,19 +29,19 @@ export const catalogApi = {
   },
 
    update: async ({
-    cashbackId,
+    catalogId,
     body,
   }: {
-    cashbackId: number
+    catalogId: number
     body: CatalogBody
   }) => {
-    const { data } = await http.patch<ResponseWithMessage>(`/catalogs/update/${cashbackId}`, body)
+    const { data } = await http.patch<ResponseWithMessage>(`/catalogs/update/${catalogId}`, body)
 
     return data
   },
 
   delete: async (catalogId: number) => {
-    const { data } = await http<ResponseWithMessage>(`/catalogs/delete/${catalogId}`)
+    const { data } = await http.delete<ResponseWithMessage>(`/catalogs/delete/${catalogId}`)
 
     return data
   },

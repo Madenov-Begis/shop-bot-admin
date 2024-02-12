@@ -6,4 +6,5 @@ export const ROUTES = {
   CASHBACKS: '/cashbacks',
   LANGUAGES: '/languages',
   CATALOGS: '/catalogs',
+  CATEGORIES: '/categories',
 }

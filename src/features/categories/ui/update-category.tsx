@@ -1,28 +1,31 @@
-import { ErrorAlert } from '@/shared/ui/error-alert/error-alert'
-import { useFetchCatalog, useUpdateCatalog } from '../queries/catalog-queries'
-import { CatalogBody } from '../types/catalog-type'
-import { Center, Loader } from '@mantine/core'
-import { CatalogForm } from './catalog-form'
 import { modals } from '@mantine/modals'
+import {
+  useFetchCategory,
+  useUpdateCategory,
+} from '../queries/category-queries'
+import { CategoryBody } from '../types/category'
+import { ErrorAlert } from '@/shared/ui/error-alert/error-alert'
+import { Center, Loader } from '@mantine/core'
+import { CategoryForm } from './category-form'
 
-interface UpdateCatalogProps {
-  catalogId: number
+interface UpdateCategoryProps {
+  categoryId: number
 }
 
-export const UpdateCatalog = ({ catalogId }: UpdateCatalogProps) => {
+export const UpdateCategory = ({ categoryId }: UpdateCategoryProps) => {
   const {
-    data: catalog,
+    data: category,
     isSuccess,
     isFetching,
     isError,
     error,
-  } = useFetchCatalog(catalogId)
+  } = useFetchCategory(categoryId)
 
-  const updateMutation = useUpdateCatalog()
+  const updateMutation = useUpdateCategory()
 
-  const handleSubmit = async (body: CatalogBody) => {
+  const handleSubmit = async (body: CategoryBody) => {
     try {
-      await updateMutation.mutateAsync({ catalogId: catalogId, body })
+      await updateMutation.mutateAsync({ categoryId: categoryId, body })
       modals.closeAll()
     } catch (error) {
       return Promise.reject(error)
@@ -45,8 +48,8 @@ export const UpdateCatalog = ({ catalogId }: UpdateCatalogProps) => {
             <ErrorAlert message={updateMutation.error.message} mb="md" />
           )}
 
-          <CatalogForm
-            initialValues={catalog.data}
+          <CategoryForm
+            initialValues={category.data}
             submitFn={handleSubmit}
             loading={updateMutation.isPending}
             submitTitle="Сохранить"

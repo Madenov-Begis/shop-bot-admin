@@ -1,13 +1,13 @@
-import { modals } from '@mantine/modals'
-import { useCreateCatalog } from '../queries/catalog-queries'
-import { CatalogBody } from '../types/catalog-type'
-import { ErrorAlert } from '@/shared/ui/error-alert/error-alert'
-import { CatalogForm } from './catalog-form'
+import { modals } from "@mantine/modals"
+import { useCreateCategory } from "../queries/category-queries"
+import { CategoryBody } from "../types/category"
+import { ErrorAlert } from "@/shared/ui/error-alert/error-alert"
+import { CategoryForm } from "./category-form"
 
-export const CreateCatalog = () => {
-  const createMutation = useCreateCatalog()
+export const CreateCategory = () => {
+  const createMutation = useCreateCategory()
 
-  const handleSubmit = async (body: CatalogBody) => {
+  const handleSubmit = async (body: CategoryBody) => {
     try {
       await createMutation.mutateAsync(body)
       modals.closeAll()
@@ -22,7 +22,7 @@ export const CreateCatalog = () => {
         <ErrorAlert message={createMutation.error.message} mb="md" />
       )}
 
-      <CatalogForm
+      <CategoryForm
         submitFn={handleSubmit}
         loading={createMutation.isPending}
         submitTitle="Добавить"

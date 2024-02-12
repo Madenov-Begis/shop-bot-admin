@@ -31,7 +31,7 @@ export const useFetchCatalogs = (params: ListParams) => {
 
 export const useFetchCatalog = (catalogId: number) => {
   return useQuery<ResponseWithData<Catalog>, HTTPError>({
-    queryKey: ['catalogs', catalogId],
+    queryKey: ['catalog', catalogId],
     queryFn: () => catalogApi.getDetail(catalogId),
   })
 }
@@ -58,7 +58,7 @@ export const useUpdateCatalog = () => {
   return useMutation<
     ResponseWithMessage,
     HTTPError,
-    { cashbackId: number; body: CatalogBody }
+    { catalogId: number; body: CatalogBody }
   >({
     mutationFn: catalogApi.update,
     onSuccess: (data) => {
