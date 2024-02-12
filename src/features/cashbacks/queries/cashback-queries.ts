@@ -7,7 +7,7 @@ import {
 import { notifications } from '@mantine/notifications'
 
 import { cashbacksApi } from '../api/cashbacks-api'
-import { Cashback, CashbackBody } from '../types/cashbacks'
+import { Cashback, CashbackBody, CashbackDetail } from '../types/cashbacks'
 import {
   HTTPError,
   ResponseWithData,
@@ -31,7 +31,7 @@ export const useFetchCashbaks = (params: ListParams) => {
 }
 
 export const useFetchCashback = (cashbackId: number) => {
-  return useQuery<ResponseWithData<Cashback>, HTTPError>({
+  return useQuery<ResponseWithData<CashbackDetail>, HTTPError>({
     queryKey: ['cashback', cashbackId],
     queryFn: () => cashbacksApi.getOne(cashbackId),
   })

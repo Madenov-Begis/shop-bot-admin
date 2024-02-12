@@ -2,10 +2,14 @@ import { FieldWithLanguages } from '@/features/languages/types/field-with-langag
 
 export interface Cashback {
   id: number
-  name: FieldWithLanguages
+  name: string
   percentage: number
   created_at: string
   updated_at: string
+}
+
+export interface CashbackDetail extends Omit<Cashback, 'name'> {
+  name: FieldWithLanguages
 }
 
 export interface CashbackBody {

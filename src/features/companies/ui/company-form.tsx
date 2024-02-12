@@ -2,26 +2,24 @@ import { withLangs } from '@/features/languages/hoc/with-languages'
 import { initLanguages } from '@/features/languages/lib/init-languages'
 import { Language } from '@/features/languages/types/language'
 import { isNotEmpty, useForm } from '@mantine/form'
-import { CategoryBody } from '../types/category'
 import { HTTPError } from '@/shared/types/http'
 import { Stack, TextInput, Text, Group, Button } from '@mantine/core'
-import { CategoriesSelect } from './categories-select'
+import { CompanyBody } from '../types/company'
 
 const initialData = (languages: Language[]) => {
   return {
-    parent_id: null,
     name: initLanguages(languages, ''),
   }
 }
 
-interface CategoryFormProps {
-  initialValues?: CategoryBody
-  submitFn: (body: CategoryBody) => Promise<unknown>
+interface CompanyFormProps {
+  initialValues?: CompanyBody
+  submitFn: (body: CompanyBody) => Promise<unknown>
   loading: boolean
   submitTitle: string
 }
 
-export const CategoryForm = withLangs<CategoryFormProps>(
+export const CompanyForm = withLangs<CompanyFormProps>(
   ({
     languages,
     initialValues = initialData(languages),
@@ -29,7 +27,7 @@ export const CategoryForm = withLangs<CategoryFormProps>(
     loading,
     submitTitle,
   }) => {
-    const form = useForm<CategoryBody>({
+    const form = useForm<CompanyBody>({
       initialValues,
       validate: {
         name: initLanguages(languages, isNotEmpty('Обязательное поле')),
@@ -51,12 +49,6 @@ export const CategoryForm = withLangs<CategoryFormProps>(
     return (
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
-          <CategoriesSelect
-            label="Родительская категория"
-            value={initialValues.parent_id}
-            {...form.getInputProps(`parent_id`)}
-          />
-
           {languages.length > 0 ? (
             languages.map((language) => {
               return (

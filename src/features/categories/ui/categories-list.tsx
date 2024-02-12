@@ -60,7 +60,7 @@ export const CategoriesList = () => {
 
   const handleUpdate = (id: number) => {
     modals.open({
-      title: 'Редактирование кэшбека',
+      title: 'Редактирование категории',
       children: <UpdateCategory categoryId={id} />,
     })
   }
@@ -69,9 +69,11 @@ export const CategoriesList = () => {
       modal: MODALS.CONFIRM_DIALOG,
       title: 'Подтвердите действие',
       innerProps: {
-        text: 'Вы действительно хотите удалить этот кэшбек?',
+        text: 'Вы действительно хотите удалить эту категорию?',
         onConfirm: (modalId: string) => {
-          deleteMutation.mutateAsync(id).finally(() => modals.close(modalId))
+          return deleteMutation
+            .mutateAsync(id)
+            .finally(() => modals.close(modalId))
         },
       },
     })

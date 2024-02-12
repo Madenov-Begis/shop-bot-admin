@@ -67,7 +67,7 @@ export const CatalogsList = () => {
       modal: MODALS.CONFIRM_DIALOG,
       title: 'Подтвердите действие',
       innerProps: {
-        text: 'Вы действительно хотите удалить этот кэшбек?',
+        text: 'Вы действительно хотите удалить этот каталог?',
         onConfirm: (modalId: string) => {
           deleteMutation.mutateAsync(id).finally(() => modals.close(modalId))
         },

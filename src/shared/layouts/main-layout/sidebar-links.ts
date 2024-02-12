@@ -35,6 +35,11 @@ export const sidebarLinks: SidebarLink[] = [
   },
   {
     id: nanoid(),
+    link: ROUTES.COMPANIES,
+    label: 'Компания',
+  },
+  {
+    id: nanoid(),
     link: ROUTES.LANGUAGES,
     label: 'Языки',
   },

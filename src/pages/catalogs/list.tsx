@@ -7,7 +7,7 @@ import { modals } from "@mantine/modals"
 const CatalogsPage = () => {
   const handleCreate = () => {
     modals.open({
-      title: 'Добавление кэшбека',
+      title: 'Добавление каталога',
       children: <CreateCatalog />,
     })
   }

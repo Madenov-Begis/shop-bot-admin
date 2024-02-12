@@ -1,5 +1,5 @@
 import { http } from '@/shared/config/http'
-import { Cashback, CashbackBody } from '../types/cashbacks'
+import { Cashback, CashbackBody, CashbackDetail } from '../types/cashbacks'
 import {
   ResponseWithData,
   ResponseWithMessage,
@@ -19,7 +19,7 @@ export const cashbacksApi = {
   },
 
   getOne: async (cashbackId: number) => {
-    const { data } = await http<ResponseWithData<Cashback>>(
+    const { data } = await http<ResponseWithData<CashbackDetail>>(
       `${RESOURCE}/${cashbackId}`
     )
 

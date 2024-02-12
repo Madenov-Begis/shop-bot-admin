@@ -1,18 +1,13 @@
-import { modals } from '@mantine/modals'
-import { MRT_ColumnDef } from 'mantine-react-table'
-
-import {
-  useDeleteCashback,
-  useFetchCashbaks,
-} from '../queries/cashback-queries'
-import { Cashback } from '../types/cashbacks'
-
-import { Table } from '@/shared/ui/table/table'
 import { useListParams } from '@/shared/hooks/user-list-params'
+import { Table } from '@/shared/ui/table/table'
+import { useDeleteCompany, useFetchCompanies } from '../queries/company-queries'
+import { Company } from '../types/company'
+import { MRT_ColumnDef } from 'mantine-react-table'
+import { modals } from '@mantine/modals'
 import { MODALS } from '@/shared/ui/custom-modals/modals'
-import { EditCashback } from './edit-cashback'
+import { UpdateCompany } from './update-company'
 
-export const CashbacksList = () => {
+export const CompanyList = () => {
   const {
     sorting,
     globalFilter,
@@ -25,20 +20,21 @@ export const CashbacksList = () => {
   } = useListParams()
 
   const {
-    data: cashbacks,
+    data: companies,
     isFetching,
     isError,
     error,
-  } = useFetchCashbaks({
+  } = useFetchCompanies({
     page: pagination.pageIndex + 1,
     per_page: pagination.pageSize,
-    search: globalFilter,
     orderby,
+    search: globalFilter,
     sort,
   })
-  const deleteMutation = useDeleteCashback()
 
-  const columns: MRT_ColumnDef<Cashback>[] = [
+  const deleteMutation = useDeleteCompany()
+
+  const columns: MRT_ColumnDef<Company>[] = [
     {
       accessorKey: 'id',
       header: 'ID',
@@ -46,11 +42,6 @@ export const CashbacksList = () => {
     {
       accessorKey: 'name',
       header: 'Название',
-    },
-    {
-      accessorKey: 'percentage',
-      header: 'Процент',
-      accessorFn: (row) => `${row.percentage}%`,
     },
     {
       accessorKey: 'created_at',
@@ -66,17 +57,17 @@ export const CashbacksList = () => {
 
   const handleUpdate = (id: number) => {
     modals.open({
-      title: 'Редактирование кэшбека',
-      children: <EditCashback cashbackId={id} />,
+      title: 'Редактирование компании',
+      children: <UpdateCompany companyId={id}/>,
     })
   }
-
+  
   const handleDelete = (id: number) => {
     modals.openContextModal({
       modal: MODALS.CONFIRM_DIALOG,
       title: 'Подтвердите действие',
       innerProps: {
-        text: 'Вы действительно хотите удалить этот кэшбек?',
+        text: 'Вы действительно хотите удалить эту компанию?',
         onConfirm: (modalId: string) => {
           return deleteMutation
             .mutateAsync(id)
@@ -88,8 +79,8 @@ export const CashbacksList = () => {
 
   return (
     <Table
-      data={cashbacks?.data ?? []}
       columns={columns}
+      data={companies?.data || []}
       onUpdate={handleUpdate}
       onDelete={handleDelete}
       state={{
@@ -109,7 +100,7 @@ export const CashbacksList = () => {
         setGlobalFilter(value ?? '')
       }}
       onPaginationChange={setPagination}
-      rowCount={cashbacks?.meta.total}
+      rowCount={companies?.meta.total}
     />
   )
 }
