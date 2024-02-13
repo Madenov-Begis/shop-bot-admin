@@ -21,6 +21,7 @@ const CatalogsPage = lazy(() => import('@/pages/catalogs/list'))
 const CategoriesPage = lazy(() => import('@/pages/categories/list'))
 const CompaniesPage = lazy(() => import('@/pages/companies/list'))
 const DeliversPage = lazy(() => import('@/pages/delivers/list'))
+const PublishersPage = lazy(() => import('@/pages/publishers/list'))
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
                   {
                     path: ROUTES.DELIVERS,
                     element: <DeliversPage />,
+                  },
+                  {
+                    path: ROUTES.PUBLISHERS,
+                    element: <PublishersPage />,
                   },
                 ],
               },

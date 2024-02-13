@@ -9,4 +9,5 @@ export const ROUTES = {
   CATEGORIES: '/categories',
   COMPANIES: '/companies',
   DELIVERS: '/delivers',
+  PUBLISHERS: '/publishers',
 }

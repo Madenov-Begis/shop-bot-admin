@@ -45,6 +45,11 @@ export const sidebarLinks: SidebarLink[] = [
   },
   {
     id: nanoid(),
+    link: ROUTES.PUBLISHERS,
+    label: 'Издания',
+  },
+  {
+    id: nanoid(),
     link: ROUTES.LANGUAGES,
     label: 'Языки',
   },
