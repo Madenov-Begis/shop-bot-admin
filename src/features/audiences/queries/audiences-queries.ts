@@ -18,10 +18,8 @@ import { ListParams } from '@/shared/types/list-params'
 const AUDIENCES = 'audiences'
 
 export const useFetchAudiences = (params: ListParams) => {
-  const elements = Object.keys(params)
-
   return useQuery<ResponseWithPagination<Audience[]>, HTTPError>({
-    queryKey: [AUDIENCES, ...elements],
+    queryKey: [AUDIENCES, params],
     queryFn: () => audiencesApi.getAll(params),
     placeholderData: keepPreviousData,
     staleTime: 30_000,

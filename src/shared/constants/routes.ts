@@ -8,4 +8,5 @@ export const ROUTES = {
   CATALOGS: '/catalogs',
   CATEGORIES: '/categories',
   COMPANIES: '/companies',
+  DELIVERS: '/delivers',
 }
