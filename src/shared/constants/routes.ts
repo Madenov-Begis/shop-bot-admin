@@ -10,4 +10,5 @@ export const ROUTES = {
   COMPANIES: '/companies',
   DELIVERS: '/delivers',
   PUBLISHERS: '/publishers',
+  PRODUCTLANGUAGES: '/product-languages',
 }
