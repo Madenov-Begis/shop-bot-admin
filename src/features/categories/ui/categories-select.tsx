@@ -12,5 +12,5 @@ export const CategoriesSelect = (props: CategoriesSelect) => {
       value: item.id.toString(),
     }
   })
-  return <Select data={selectData} {...props} value={props.value?.toString()} />
+  return <Select data={selectData} {...props} />
 }

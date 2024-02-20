@@ -14,6 +14,7 @@ import {
   ResponseWithPagination,
 } from '@/shared/types/http'
 import { ListParams } from '@/shared/types/list-params'
+import { SelectType } from '@/shared/types/select-type'
 
 const AUDIENCES = 'audiences'
 
@@ -22,6 +23,14 @@ export const useFetchAudiences = (params: ListParams) => {
     queryKey: [AUDIENCES, params],
     queryFn: () => audiencesApi.getAll(params),
     placeholderData: keepPreviousData,
+    staleTime: 30_000,
+  })
+}
+
+export const useFetchAudienceList = () => {
+  return useQuery<ResponseWithData<SelectType[]>>({
+    queryKey: ['audiences-list'],
+    queryFn: audiencesApi.list,
     staleTime: 30_000,
   })
 }

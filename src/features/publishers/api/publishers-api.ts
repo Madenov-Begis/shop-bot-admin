@@ -2,9 +2,11 @@ import { http } from '@/shared/config/http'
 import { ListParams } from '@/shared/types/list-params'
 import { Publisher, PublisherBody, PublisherDetail } from '../types/publishers'
 import {
+  ResponseWithData,
   ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
+import { SelectType } from '@/shared/types/select-type'
 
 export const publishersApi = {
   getAll: async (params: ListParams) => {
@@ -52,6 +54,12 @@ export const publishersApi = {
     const { data } = await http.delete<ResponseWithMessage>(
       `/publishers/delete/${publisherId}`
     )
+
+    return data
+  },
+
+  list: async () => {
+    const { data } = await http<ResponseWithData<SelectType[]>>('publishers/list')
 
     return data
   },

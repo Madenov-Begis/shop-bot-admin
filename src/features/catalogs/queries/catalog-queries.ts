@@ -15,6 +15,7 @@ import {
 } from '@/shared/types/http'
 import { Catalog, CatalogBody } from '../types/catalog-type'
 import { notifications } from '@mantine/notifications'
+import { SelectType } from '@/shared/types/select-type'
 
 const CATALOGS = 'catalogs'
 
@@ -33,6 +34,14 @@ export const useFetchCatalog = (catalogId: number) => {
   return useQuery<ResponseWithData<Catalog>, HTTPError>({
     queryKey: ['catalog', catalogId],
     queryFn: () => catalogApi.getDetail(catalogId),
+  })
+}
+
+export const useFetchCatalogList = () => {
+  return useQuery<ResponseWithData<SelectType[]>>({
+    queryKey: ['catalog-list'],
+    queryFn: catalogApi.list,
+    staleTime: 30_000,
   })
 }
 

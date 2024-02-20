@@ -67,6 +67,15 @@ export const Table = <TData extends MRT_RowData>(props: TableProps<TData>) => {
         showSkeletons: false,
         ...otherProps.state,
       }}
+      mantinePaperProps={{
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
+          height: 'calc(100vh - 180px)',
+        },
+      }}
+      mantineTableContainerProps={{ style: { flexGrow: '1' } }}
+      mantineTableFooterProps={{ style: { flexGrow: '0' } }}
     />
   )
 }

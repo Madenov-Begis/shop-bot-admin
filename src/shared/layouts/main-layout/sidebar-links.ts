@@ -15,6 +15,11 @@ export const sidebarLinks: SidebarLink[] = [
   },
   {
     id: nanoid(),
+    link: ROUTES.PRODUCTS,
+    label: 'Продукты',
+  },
+  {
+    id: nanoid(),
     link: ROUTES.AUDIENCES,
     label: 'audience',
   },

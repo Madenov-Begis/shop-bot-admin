@@ -22,7 +22,12 @@ const CategoriesPage = lazy(() => import('@/pages/categories/list'))
 const CompaniesPage = lazy(() => import('@/pages/companies/list'))
 const DeliversPage = lazy(() => import('@/pages/delivers/list'))
 const PublishersPage = lazy(() => import('@/pages/publishers/list'))
-const ProductLanguagesPage = lazy(() => import('@/pages/product-languages/list'))
+const ProductLanguagesPage = lazy(
+  () => import('@/pages/product-languages/list')
+)
+const ProductsPage = lazy(() => import('@/pages/products/list'))
+const CreateProduct = lazy(() => import('@/pages/products/create'))
+const UpdateProduct = lazy(() => import('@/pages/products/update'))
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +44,18 @@ export const router = createBrowserRouter([
                 path: ROUTES.HOME,
                 element: <MainLayout />,
                 children: [
+                  {
+                    path: ROUTES.PRODUCTS,
+                    element: <ProductsPage />,
+                  },
+                  {
+                    path: ROUTES.CREATEPRODUCT,
+                    element: <CreateProduct />,
+                  },
+                  {
+                    path: ROUTES.UPDATEPRODUCT,
+                    element: <UpdateProduct />,
+                  },
                   {
                     path: ROUTES.AUDIENCES,
                     element: <AudiencesPage />,

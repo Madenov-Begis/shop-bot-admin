@@ -6,6 +6,7 @@ import {
   ResponseWithPagination,
 } from '@/shared/types/http'
 import { ListParams } from '@/shared/types/list-params'
+import { SelectType } from '@/shared/types/select-type'
 
 const RESOURCE = '/cashbacks'
 
@@ -53,6 +54,14 @@ export const cashbacksApi = {
   delete: async (cashbackId: number) => {
     const { data } = await http.delete<ResponseWithMessage>(
       `${RESOURCE}/delete/${cashbackId}`
+    )
+
+    return data
+  },
+
+  list: async () => {
+    const { data } = await http<ResponseWithData<SelectType[]>>(
+      '/cashbacks/list'
     )
 
     return data

@@ -15,6 +15,7 @@ import {
 } from '@tanstack/react-query'
 import { Company, CompanyBody, CompanyDeatil } from '../types/company'
 import { notifications } from '@mantine/notifications'
+import { SelectType } from '@/shared/types/select-type'
 
 const COMPANIES = 'companies'
 
@@ -25,6 +26,14 @@ export const useFetchCompanies = (params: ListParams) => {
     queryKey: [COMPANIES, ...elements],
     queryFn: () => companyApi.getAll(params),
     placeholderData: keepPreviousData,
+    staleTime: 30_000,
+  })
+}
+
+export const useFetchCompanyList = () => {
+  return useQuery<ResponseWithData<SelectType[]>>({
+    queryKey: ['company-list'],
+    queryFn: companyApi.list,
     staleTime: 30_000,
   })
 }

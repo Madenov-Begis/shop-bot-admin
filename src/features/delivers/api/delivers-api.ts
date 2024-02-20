@@ -6,6 +6,7 @@ import {
   ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
+import { SelectType } from '@/shared/types/select-type'
 
 export const deliversApi = {
   getAll: async (params: ListParams) => {
@@ -53,6 +54,12 @@ export const deliversApi = {
     const { data } = await http.delete<ResponseWithMessage>(
       `/delivers/delete/${deliverId}`
     )
+
+    return data
+  },
+
+  list: async () => {
+    const { data } = await http<ResponseWithData<SelectType[]>>('/delivers/list')
 
     return data
   },

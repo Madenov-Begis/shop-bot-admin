@@ -14,6 +14,7 @@ import {
 } from '@/shared/types/http'
 import { Delivers, DeliversBody } from '../types/delivers'
 import { notifications } from '@mantine/notifications'
+import { SelectType } from '@/shared/types/select-type'
 
 const DELIVERS = 'delivers'
 
@@ -22,6 +23,14 @@ export const useFetchDelivers = (params: ListParams) => {
     queryKey: [DELIVERS, params],
     queryFn: () => deliversApi.getAll(params),
     placeholderData: keepPreviousData,
+    staleTime: 30_000,
+  })
+}
+
+export const useFetchDeliversList = () => {
+  return useQuery<ResponseWithData<SelectType[]>>({
+    queryKey: ['delivers-list'],
+    queryFn: deliversApi.list,
     staleTime: 30_000,
   })
 }

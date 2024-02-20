@@ -10,7 +10,7 @@ export interface Category {
 }
 
 export interface CategoryBody {
-  parent_id: number | null
+  parent_id: string | null
   name: FieldWithLanguages
 }
 

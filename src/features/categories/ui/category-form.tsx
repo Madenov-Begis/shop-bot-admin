@@ -53,7 +53,6 @@ export const CategoryForm = withLangs<CategoryFormProps>(
         <Stack>
           <CategoriesSelect
             label="Родительская категория"
-            value={initialValues.parent_id}
             {...form.getInputProps(`parent_id`)}
           />
 

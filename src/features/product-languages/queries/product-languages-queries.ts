@@ -9,6 +9,7 @@ import { productLanguagesApi } from '../api/product-languages-api'
 import { notifications } from '@mantine/notifications'
 import {
   HTTPError,
+  ResponseWithData,
   ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
@@ -17,16 +18,28 @@ import {
   ProductLanguagesBody,
 } from '../types/product-languages'
 import { useQueryWithLanguage } from '@/features/languages/hooks/use-query-with-language'
+import { SelectType } from '@/shared/types/select-type'
 
 const PRODUCTLANGUAGES = 'product-languages'
 
 export const useFetchProductLanguages = (params: ListParams) => {
   const element = Object.values(params)
 
-  return useQueryWithLanguage<ResponseWithPagination<ProductLanguages[]>, HTTPError>({
+  return useQueryWithLanguage<
+    ResponseWithPagination<ProductLanguages[]>,
+    HTTPError
+  >({
     queryFn: () => productLanguagesApi.getAll(params),
     queryKey: [PRODUCTLANGUAGES, ...element],
     placeholderData: keepPreviousData,
+    staleTime: 30_000,
+  })
+}
+
+export const useFetchProductLanguagesList = () => {
+  return useQuery<ResponseWithData<SelectType[]>>({
+    queryKey: ['product-languages-lit'],
+    queryFn: productLanguagesApi.list,
     staleTime: 30_000,
   })
 }

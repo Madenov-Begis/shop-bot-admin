@@ -9,11 +9,13 @@ import {
 } from '@tanstack/react-query'
 import {
   HTTPError,
+  ResponseWithData,
   ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
 import { Publisher, PublisherBody, PublisherDetail } from '../types/publishers'
 import { notifications } from '@mantine/notifications'
+import { SelectType } from '@/shared/types/select-type'
 
 const PUBLIHSER = 'publishers'
 
@@ -24,6 +26,14 @@ export const useFetchPublishers = (params: ListParams) => {
     queryKey: [PUBLIHSER, ...element],
     queryFn: () => publishersApi.getAll(params),
     placeholderData: keepPreviousData,
+    staleTime: 30_000,
+  })
+}
+
+export const useFetchPublishersList = () => {
+  return useQuery<ResponseWithData<SelectType[]>>({
+    queryKey: ['publisher-list'],
+    queryFn: publishersApi.list,
     staleTime: 30_000,
   })
 }

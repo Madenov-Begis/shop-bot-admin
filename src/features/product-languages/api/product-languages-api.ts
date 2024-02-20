@@ -5,9 +5,11 @@ import {
   ProductLanguagesBody,
 } from '../types/product-languages'
 import {
+  ResponseWithData,
   ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
+import { SelectType } from '@/shared/types/select-type'
 
 export const productLanguagesApi = {
   getAll: async (params: ListParams) => {
@@ -54,6 +56,14 @@ export const productLanguagesApi = {
   delete: async (productLanguageId: number) => {
     const { data } = await http.delete<ResponseWithMessage>(
       `/product-languages/delete/${productLanguageId}`
+    )
+
+    return data
+  },
+
+  list: async () => {
+    const { data } = await http<ResponseWithData<SelectType[]>>(
+      '/product-languages/list'
     )
 
     return data

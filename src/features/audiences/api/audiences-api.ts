@@ -6,6 +6,7 @@ import {
 } from '@/shared/types/http'
 import { Audience, AudienceBody } from '../types/audience'
 import { ListParams } from '@/shared/types/list-params'
+import { SelectType } from '@/shared/types/select-type'
 
 export const audiencesApi = {
   getAll: async (params: ListParams) => {
@@ -54,6 +55,14 @@ export const audiencesApi = {
   delete: async (audienceId: number) => {
     const { data } = await http.delete<ResponseWithMessage>(
       `/audiences/delete/${audienceId}`
+    )
+
+    return data
+  },
+
+  list: async () => {
+    const { data } = await http<ResponseWithData<SelectType[]>>(
+      '/audiences/list'
     )
 
     return data

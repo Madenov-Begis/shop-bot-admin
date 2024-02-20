@@ -2,6 +2,7 @@ import { http } from '@/shared/config/http'
 import { ResponseWithData, ResponseWithPagination } from '@/shared/types/http'
 import { Company, CompanyBody, CompanyDeatil } from '../types/company'
 import { ListParams } from '@/shared/types/list-params'
+import { SelectType } from '@/shared/types/select-type'
 
 export const companyApi = {
   getAll: async (params: ListParams) => {
@@ -41,6 +42,14 @@ export const companyApi = {
 
   delete: async (companyId: number) => {
     const { data } = await http.delete(`/companies/delete/${companyId}`)
+
+    return data
+  },
+
+  list: async () => {
+    const { data } = await http<ResponseWithData<SelectType[]>>(
+      '/companies/list'
+    )
 
     return data
   },

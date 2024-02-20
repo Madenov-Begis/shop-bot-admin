@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@mantine/core": "^7.5.0",
+    "@mantine/dates": "^7.5.0",
+    "@mantine/dropzone": "^7.5.0",
     "@mantine/form": "^7.5.0",
     "@mantine/hooks": "^7.5.0",
     "@mantine/modals": "^7.5.0",
@@ -19,6 +21,7 @@
     "@tanstack/react-query": "^5.17.19",
     "@tanstack/react-query-devtools": "^5.18.1",
     "axios": "^1.6.7",
+    "dayjs": "^1.11.10",
     "i18next": "^23.8.1",
     "i18next-browser-languagedetector": "^7.2.0",
     "i18next-http-backend": "^2.4.2",

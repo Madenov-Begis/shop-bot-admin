@@ -55,7 +55,7 @@ export const useCreateCategory = () => {
 export const useFetchCategoryList = () => {
   return useQuery<ResponseWithData<CategoryList[]>, HTTPError>({
     queryFn: categoryApi.list,
-    queryKey: ['list'],
+    queryKey: ['categories-list'],
     staleTime: 30_000,
   })
 }

@@ -49,7 +49,12 @@ export const UpdateCategory = ({ categoryId }: UpdateCategoryProps) => {
           )}
 
           <CategoryForm
-            initialValues={category.data}
+            initialValues={{
+              name: category.data.name,
+              parent_id: category.data.parent_id
+                ? category.data.parent_id.toString()
+                : null,
+            }}
             submitFn={handleSubmit}
             loading={updateMutation.isPending}
             submitTitle="Сохранить"

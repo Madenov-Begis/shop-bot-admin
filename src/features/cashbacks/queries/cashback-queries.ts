@@ -16,6 +16,7 @@ import {
 } from '@/shared/types/http'
 import { ListParams } from '@/shared/types/list-params'
 import { useQueryWithLanguage } from '@/features/languages/hooks/use-query-with-language'
+import { SelectType } from '@/shared/types/select-type'
 
 const CASHBACKS = 'cashbacks'
 
@@ -34,6 +35,14 @@ export const useFetchCashback = (cashbackId: number) => {
   return useQuery<ResponseWithData<CashbackDetail>, HTTPError>({
     queryKey: ['cashback', cashbackId],
     queryFn: () => cashbacksApi.getOne(cashbackId),
+  })
+}
+
+export const useFetchCashbakList = () => {
+  return useQuery<ResponseWithData<SelectType[]>>({
+    queryKey: ['cashbaks-list'],
+    queryFn: cashbacksApi.list,
+    staleTime: 30_000,
   })
 }
 

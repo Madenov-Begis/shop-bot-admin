@@ -3,4 +3,4 @@ export const languages = {
   uz: 'O‘zbekcha',
 }
 
-export const DEFAULT_LANGUAGE = 'uz'
+export const  DEFAULT_LANGUAGE = 'uz'
