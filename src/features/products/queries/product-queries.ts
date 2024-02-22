@@ -13,7 +13,7 @@ import {
   ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
-import { Product, ProductUpdate } from '../types/products'
+import { Product, ProductDetail } from '../types/products'
 import { notifications } from '@mantine/notifications'
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -31,7 +31,7 @@ export const useFetchProducts = (params: ListParams) => {
 }
 
 export const useFetchProduct = (productId: string | undefined) => {
-  return useQuery<ResponseWithData<ProductUpdate>>({
+  return useQuery<ResponseWithData<ProductDetail>>({
     queryKey: ['product', productId],
     queryFn: () => productsApi.getOne(productId),
   })
@@ -63,7 +63,7 @@ export const useUpdateProduct = () => {
   >({
     mutationFn: productsApi.update,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [PRODUCTS] })
+      queryClient.invalidateQueries({ queryKey: ['product'] })
       notifications.show({
         title: 'Успешно',
         color: 'green',
@@ -80,6 +80,30 @@ export const useDeleteProduct = () => {
     mutationFn: productsApi.delete,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [PRODUCTS] })
+
+      notifications.show({
+        title: 'Успешно',
+        message: data.message,
+        color: 'green',
+      })
+    },
+    onError: (error) => {
+      notifications.show({
+        title: 'Ошибка',
+        message: error.message,
+        color: 'red',
+      })
+    },
+  })
+}
+
+export const useDeleteProductPhoto = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: productsApi.deletePhoto,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['products'] })
 
       notifications.show({
         title: 'Успешно',

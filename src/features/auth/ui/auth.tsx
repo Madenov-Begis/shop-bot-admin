@@ -1,7 +1,7 @@
 import { Await, Outlet, useLoaderData } from 'react-router-dom'
 import { AuthProvider } from '../auth-context/auth-provider'
 import { Suspense } from 'react'
-import { Loader } from '@mantine/core'
+import { Center, Loader } from '@mantine/core'
 
 export const Auth = () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -9,7 +9,13 @@ export const Auth = () => {
   const { auth } = useLoaderData()
 
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense
+      fallback={
+        <Center h={'100vh'}>
+          <Loader />
+        </Center>
+      }
+    >
       <Await
         resolve={auth}
         children={(auth) => {

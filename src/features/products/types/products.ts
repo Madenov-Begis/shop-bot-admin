@@ -33,7 +33,6 @@ export interface Product {
 }
 
 export interface ProductBody {
-  id?: number | undefined
   company_id: string | null
   catalog_id: string | null
   category_id: string | null
@@ -42,15 +41,15 @@ export interface ProductBody {
   language_id: string | null
   deliver_id: string | null
   cashback_id: string | null
-  published_at: Date | null
-  index: string | null
-  name?: FieldWithLanguages
-  periods?: number | undefined
-  pages?: number | undefined
-  description?: string
-  images?: File[] | string[] 
-  price?: number | undefined
-  exist_periods?: {
+  index: number | undefined
+  name: FieldWithLanguages
+  periods: number | undefined
+  pages: number | undefined
+  price: number | undefined
+  published_at: Dayjs | null
+  description: string
+  images: File[] | string[]
+  exist_periods: {
     may: boolean
     july: boolean
     june: boolean
@@ -66,24 +65,24 @@ export interface ProductBody {
   }
 }
 
-export interface ProductUpdate {
+export interface ProductDetail {
   id: number
-  category_id: number
-  catalog_id: number
   company_id: number
+  catalog_id: number
+  category_id: number
   publisher_id: number
   audience_id: number
   language_id: number
   deliver_id: number
   cashback_id: number
-  published_at: Dayjs
-  index: number
-  name: FieldWithLanguages | undefined
+  index: string
+  name: FieldWithLanguages
   periods: number
   pages: number
+  price: number
+  published_at: string
   description: string
   images: string[]
-  price: number
   exist_periods: {
     may: boolean
     july: boolean

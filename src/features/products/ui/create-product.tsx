@@ -4,6 +4,7 @@ import { ProductForm } from './product-form'
 import { ProductBody } from '../types/products'
 import dayjs from 'dayjs'
 import { FormEvent } from 'react'
+import { UseFormReturnType } from '@mantine/form'
 
 export const CreateProductList = () => {
   const createMutation = useCreateProduct()
@@ -30,6 +31,16 @@ export const CreateProductList = () => {
     }
   }
 
+  const handleDelete = ({
+    form,
+    index,
+  }: {
+    form: UseFormReturnType<ProductBody, (values: ProductBody) => ProductBody>
+    index: number
+  }) => {
+    form.removeListItem('images', index)
+  }
+
   return (
     <>
       {createMutation.isError && !createMutation.error.errors && (
@@ -37,6 +48,7 @@ export const CreateProductList = () => {
       )}
 
       <ProductForm
+        handleDelete={handleDelete}
         submitFn={handleSubmit}
         loading={createMutation.isPending}
         submitTitle="Добавить продукт"

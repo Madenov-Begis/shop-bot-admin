@@ -14,7 +14,7 @@ import {
   Image,
   ActionIcon,
 } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { UseFormReturnType, isNotEmpty, useForm } from '@mantine/form'
 import { DateInput } from '@mantine/dates'
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone'
 
@@ -31,7 +31,7 @@ import { Language } from '@/features/languages/types/language'
 import { initLanguages } from '@/features/languages/lib/init-languages'
 import { withLangs } from '@/features/languages/hoc/with-languages'
 
-import { IconX } from '@tabler/icons-react'
+import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react'
 
 const monthes = [
   { value: 'january', label: 'Январь' },
@@ -48,24 +48,24 @@ const monthes = [
   { value: 'december', label: 'Декабрь' },
 ]
 
-const initialData = (languages: Language[]) => {
+const initialData = (languages: Language[]): ProductBody => {
   return {
     name: initLanguages(languages, ''),
     description: '',
-    index: '',
+    index: undefined,
     periods: undefined,
     pages: undefined,
     price: undefined,
     published_at: null,
     images: [],
-    category_id: '',
-    company_id: '',
-    catalog_id: '',
-    publisher_id: '',
-    audience_id: '',
-    language_id: '',
-    deliver_id: '',
-    cashback_id: '',
+    category_id: null,
+    company_id: null,
+    catalog_id: null,
+    publisher_id: null,
+    audience_id: null,
+    language_id: null,
+    deliver_id: null,
+    cashback_id: null,
     exist_periods: {
       may: false,
       july: false,
@@ -94,6 +94,15 @@ interface ProductFormProps {
   }) => Promise<undefined>
   loading: boolean
   submitTitle: string
+  handleDelete: ({
+    image,
+    form,
+    index,
+  }: {
+    image?: string | File
+    form: UseFormReturnType<ProductBody, (values: ProductBody) => ProductBody>
+    index: number
+  }) => void
 }
 
 export const ProductForm = withLangs<ProductFormProps>(
@@ -103,9 +112,32 @@ export const ProductForm = withLangs<ProductFormProps>(
     submitFn,
     loading,
     submitTitle,
+    handleDelete,
   }) => {
     const form = useForm<ProductBody>({
       initialValues,
+      validate: {
+        name: initLanguages(languages, isNotEmpty('Обязательное поле')),
+        description: isNotEmpty('Обязательное поле'),
+        published_at: isNotEmpty('Обязательное поле'),
+        index: isNotEmpty('Обязательное поле'),
+        periods: isNotEmpty('Обязательное поле'),
+        pages: isNotEmpty('Обязательное поле'),
+        price: isNotEmpty('Обязательное поле'),
+        images: isNotEmpty('Обязательное поле'),
+        category_id: isNotEmpty('Обязательное поле'),
+        company_id: isNotEmpty('Обязательное поле'),
+        catalog_id: isNotEmpty('Обязательное поле'),
+        publisher_id: isNotEmpty('Обязательное поле'),
+        audience_id: isNotEmpty('Обязательное поле'),
+        language_id: isNotEmpty('Обязательное поле'),
+        deliver_id: isNotEmpty('Обязательное поле'),
+        cashback_id: isNotEmpty('Обязательное поле'),
+        exist_periods: (value) =>
+          !Object.values(value).includes(true)
+            ? 'Выберите мининум один месяц'
+            : null,
+      },
     })
 
     const handleSubmit = async (
@@ -155,7 +187,7 @@ export const ProductForm = withLangs<ProductFormProps>(
               <ActionIcon
                 variant="filled"
                 color="red"
-                onClick={() => form.removeListItem('images', index)}
+                onClick={() => handleDelete({ image, form, index })}
               >
                 <IconX />
               </ActionIcon>
@@ -167,7 +199,7 @@ export const ProductForm = withLangs<ProductFormProps>(
 
     return (
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack>
+        <Stack maw={1000} mx={'auto'}>
           <Dropzone
             accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
             onDrop={(files) => {
@@ -176,10 +208,86 @@ export const ProductForm = withLangs<ProductFormProps>(
                 ...files,
               ])
             }}
+            onReject={(images) => {
+              images.forEach((image) => {
+                if (image.file.size > 4 * 1024 ** 2) {
+                  form.setFieldError(
+                    'images',
+                    'Размер файла превышает 4 МБ байта'
+                  )
+                } else if (
+                  image.file.type !== 'image/jpeg' &&
+                  image.file.type !== 'image/png'
+                ) {
+                  form.setFieldError(
+                    'images',
+                    'Доступные форматы изображения PNG, JPEG'
+                  )
+                }
+              })
+            }}
+            maxSize={4 * 1024 ** 2}
             multiple
+            style={{
+              backgroundColor: '#ededed50',
+            }}
           >
-            <Text ta="center">Drop images here</Text>
+            <Group
+              justify="center"
+              gap="xl"
+              align="center"
+              h={150}
+              style={{ pointerEvents: 'none' }}
+            >
+              <Dropzone.Accept>
+                <IconUpload
+                  style={{
+                    width: '50px',
+                    height: '50px',
+                    color: 'var(--mantine-color-blue-6)',
+                  }}
+                  stroke={1.5}
+                />
+              </Dropzone.Accept>
+              <Dropzone.Reject>
+                <IconX
+                  style={{
+                    width: '50px',
+                    height: '50px',
+                    color: 'var(--mantine-color-red-6)',
+                  }}
+                  stroke={1.5}
+                />
+              </Dropzone.Reject>
+              <Dropzone.Idle>
+                <IconPhoto
+                  style={{
+                    width: '50px',
+                    height: '50px',
+                    color: 'var(--mantine-color-dimmed)',
+                  }}
+                  stroke={1.5}
+                />
+              </Dropzone.Idle>
+
+              <div>
+                <Text size="xl" inline>
+                  Перетащите изображения сюда или нажмите, чтобы выбрать файлы
+                </Text>
+                <Text size="sm" c="dimmed" inline mt={7}>
+                  Прикрепите столько файлов, сколько хотите, каждый файл не
+                  должен превышать 4 МБ
+                </Text>
+              </div>
+            </Group>
           </Dropzone>
+
+          {form.errors.images && (
+            <Text c="red" mt={4}>
+              {form.errors.images}
+            </Text>
+          )}
+
           <Grid gutter={{ base: 'md' }}>{previews}</Grid>
 
           {languages.length > 0 ? (
@@ -337,6 +445,12 @@ export const ProductForm = withLangs<ProductFormProps>(
                   )
                 })}
               </Group>
+
+              {form.errors.exist_periods && (
+                <Text c="red" mt={4} size="sm">
+                  {form.errors.exist_periods}
+                </Text>
+              )}
             </>
           ) : (
             <div>

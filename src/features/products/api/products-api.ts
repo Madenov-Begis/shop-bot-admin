@@ -5,7 +5,7 @@ import {
   ResponseWithPagination,
 } from '@/shared/types/http'
 import { ListParams } from '@/shared/types/list-params'
-import { Product, ProductUpdate } from '../types/products'
+import { Product, ProductDetail } from '../types/products'
 
 export const productsApi = {
   getAll: async (params: ListParams) => {
@@ -17,7 +17,7 @@ export const productsApi = {
   },
 
   getOne: async (productId: string | undefined) => {
-    const { data } = await http<ResponseWithData<ProductUpdate>>(
+    const { data } = await http<ResponseWithData<ProductDetail>>(
       `/products/edit/${productId}`
     )
 
@@ -53,6 +53,20 @@ export const productsApi = {
     const { data } = await http.delete<ResponseWithMessage>(
       `/products/delete/${productId}`
     )
+
+    return data
+  },
+
+  deletePhoto: async ({
+    productId,
+    path,
+  }: {
+    productId: string | undefined
+    path: string
+  }) => {
+    const { data } = await http.delete(`/products/delete-photo/${productId}`, {
+      params: { path },
+    })
 
     return data
   },
