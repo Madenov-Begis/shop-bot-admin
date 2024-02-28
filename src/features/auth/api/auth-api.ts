@@ -16,13 +16,13 @@ export const authApi = {
   },
 
   getMe: async () => {
-    const { data } = await http<User>('/auth/getme')
+    const { data } = await http<User>('/auth/me')
 
     return data
   },
 
   logout: async () => {
-    const { data } = await http.post<ResponseWithMessage>('/auth/logout')
+    const { data } = await http.post<ResponseWithMessage>('/auth/log-out')
 
     return data
   },

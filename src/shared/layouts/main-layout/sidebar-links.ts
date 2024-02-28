@@ -13,16 +13,7 @@ export const sidebarLinks: SidebarLink[] = [
     link: ROUTES.HOME,
     label: 'Главная',
   },
-  {
-    id: nanoid(),
-    link: ROUTES.PRODUCTS,
-    label: 'Продукты',
-  },
-  {
-    id: nanoid(),
-    link: ROUTES.AUDIENCES,
-    label: 'audience',
-  },
+
   {
     id: nanoid(),
     link: ROUTES.CASHBACKS,
@@ -33,31 +24,7 @@ export const sidebarLinks: SidebarLink[] = [
     link: ROUTES.CATALOGS,
     label: 'Каталог',
   },
-  {
-    id: nanoid(),
-    link: ROUTES.CATEGORIES,
-    label: 'Категория',
-  },
-  {
-    id: nanoid(),
-    link: ROUTES.COMPANIES,
-    label: 'Компания',
-  },
-  {
-    id: nanoid(),
-    link: ROUTES.DELIVERS,
-    label: 'Доставка',
-  },
-  {
-    id: nanoid(),
-    link: ROUTES.PUBLISHERS,
-    label: 'Издания',
-  },
-  {
-    id: nanoid(),
-    link: ROUTES.PRODUCTLANGUAGES,
-    label: 'Язык продукта',
-  },
+
   {
     id: nanoid(),
     link: ROUTES.LANGUAGES,

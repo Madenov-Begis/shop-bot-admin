@@ -5,7 +5,7 @@ const LoginPage = () => {
   return (
     <>
       <Title order={2} ta={'center'} mb="md">
-        Войти
+        Вход
       </Title>
 
       <LoginForm />
