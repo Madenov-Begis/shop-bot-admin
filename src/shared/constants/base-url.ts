@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://deliver-shop.uz/api/amdin/v1'
+export const BASE_URL = 'https://deliver-shop.uz/api/admin/v1'
