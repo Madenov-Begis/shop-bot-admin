@@ -1,7 +1,7 @@
 import { PropsWithChildren, useState } from 'react'
 import { notifications } from '@mantine/notifications'
 
-import Cookies from 'js-cookie'
+// import Cookies from 'js-cookie'
 
 import { AuthContext } from './auth-context'
 

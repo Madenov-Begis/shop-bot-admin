@@ -29,8 +29,8 @@ export const MainLayout = () => {
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between">
           <Burger opened={opened} onClick={open} hiddenFrom="sm" />
-          <Text size="xl" visibleFrom="sm">
-            E-OBUNA
+          <Text size="xl" visibleFrom="sm" fw={600}>
+            SHOP-ADMIN
           </Text>
           <Group>
             <LangSwitcher />
