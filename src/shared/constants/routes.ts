@@ -9,4 +9,5 @@ export const ROUTES = {
   PRODUCTSCREATE: 'products/create',
   PRODUCTSUPDATE: 'products/update/:id',
   CATEGORIES: 'categories',
+  USERS: 'users',
 }

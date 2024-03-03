@@ -19,6 +19,7 @@ const ProductsPage = lazy(() => import('@/pages/products/list'))
 const CreateProduct = lazy(() => import('@/pages/products/create'))
 const UpdateProduct = lazy(() => import('@/pages/products/update'))
 const CategoryPage = lazy(() => import('@/pages/categories/list'))
+const UsersPage = lazy(() => import('@/pages/users/list'))
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ export const router = createBrowserRouter([
                   {
                     path: ROUTES.PRODUCTSUPDATE,
                     element: <UpdateProduct />,
+                  },
+                  {
+                    path: ROUTES.USERS,
+                    element: <UsersPage />,
                   },
                 ],
               },

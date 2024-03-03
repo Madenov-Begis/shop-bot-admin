@@ -23,6 +23,11 @@ export const sidebarLinks: SidebarLink[] = [
     link: ROUTES.CATEGORIES,
     label: 'Категории',
   },
+  {
+    id: nanoid(),
+    link: ROUTES.USERS,
+    label: 'Пользователи',
+  },
 
   // {
   //   id: nanoid(),
