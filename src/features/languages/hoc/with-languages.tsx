@@ -1,6 +1,6 @@
 import { ComponentType } from 'react'
 import { Language } from '../types/language'
-import { useFetchListLanguages } from '../queries/languages-queries'
+import { useFetchLanguages } from '../queries/languages-queries'
 import { Center, Loader } from '@mantine/core'
 import { ErrorAlert } from '@/shared/ui/error-alert/error-alert'
 
@@ -19,7 +19,7 @@ export const withLangs = <T,>(
       isFetching,
       isError,
       isSuccess,
-    } = useFetchListLanguages()
+    } = useFetchLanguages()
 
     if (isFetching)
       return (

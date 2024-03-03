@@ -15,7 +15,6 @@ import { useDisclosure } from '@mantine/hooks'
 
 import { Logout } from '@/features/auth/ui/logout'
 import { Sidebar } from './sidebar'
-import { LangSwitcher } from '@/features/languages/ui/lang-switcher'
 
 export const MainLayout = () => {
   const [opened, { close, open }] = useDisclosure()
@@ -33,7 +32,6 @@ export const MainLayout = () => {
             SHOP-ADMIN
           </Text>
           <Group>
-            <LangSwitcher />
             <Logout />
           </Group>
         </Group>

@@ -1,16 +1,11 @@
 import { http } from '@/shared/config/http'
 
-import { LoginResponse, LoginBody } from '../types/login'
+import { LoginBody } from '../types/login'
 import { User } from '../types/user'
-
-import { ResponseWithData, ResponseWithMessage } from '@/shared/types/http'
 
 export const authApi = {
   login: async (body: LoginBody) => {
-    const { data } = await http.post<ResponseWithData<LoginResponse>>(
-      '/auth/login',
-      body
-    )
+    const { data } = await http.post<User>('/auth/login', body)
 
     return data
   },
@@ -22,7 +17,7 @@ export const authApi = {
   },
 
   logout: async () => {
-    const { data } = await http.post<ResponseWithMessage>('/auth/log-out')
+    const { data } = await http.post('/auth/log-out')
 
     return data
   },

@@ -1,7 +1,8 @@
 import { Button, Group, Stack, TextInput } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { isNotEmpty, useForm } from '@mantine/form'
 import { LanguageBody } from '../types/language'
 import { HTTPError } from '@/shared/types/http'
+import { notifications } from '@mantine/notifications'
 
 const initialData: LanguageBody = {
   locale: '',
@@ -20,6 +21,10 @@ export const LanguageForm = (props: LanguageFormProps) => {
 
   const form = useForm<LanguageBody>({
     initialValues,
+    validate: {
+      locale: isNotEmpty('Обязательное поле'),
+      name: isNotEmpty('Обязательное поле'),
+    },
   })
 
   const handleSubmit = async (data: typeof form.values) => {
@@ -28,9 +33,11 @@ export const LanguageForm = (props: LanguageFormProps) => {
       form.reset()
     } catch (error) {
       const err = error as HTTPError
-      if (err.errors) {
-        form.setErrors(err.errors)
-      }
+      notifications.show({
+        title: 'Ошибка',
+        message: err.message,
+        color: 'red',
+      })
     }
   }
 

@@ -11,7 +11,6 @@ import { Language, LanguageBody } from '../types/language'
 
 import {
   HTTPError,
-  ResponseWithData,
   ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
@@ -19,27 +18,17 @@ import { ListParams } from '@/shared/types/list-params'
 
 const LANGUAGES = 'languages'
 
-export const useFetchLanguages = (params: ListParams) => {
-  const elements = Object.values(params)
-
+export const useFetchLanguages = (params?: ListParams) => {
   return useQuery<ResponseWithPagination<Language[]>, HTTPError>({
-    queryKey: [LANGUAGES, ...elements],
+    queryKey: [LANGUAGES, params],
     queryFn: () => languagesApi.getAll(params),
     placeholderData: keepPreviousData,
     staleTime: 30_000,
   })
 }
 
-export const useFetchListLanguages = () => {
-  return useQuery({
-    queryKey: [LANGUAGES],
-    queryFn: languagesApi.list,
-    staleTime: 300_000,
-  })
-}
-
 export const useFetchLanguage = (languageId: number) => {
-  return useQuery<ResponseWithData<Language>, HTTPError>({
+  return useQuery<Language, HTTPError>({
     queryKey: ['language', languageId],
     queryFn: () => languagesApi.getOne(languageId),
   })
@@ -68,19 +57,19 @@ export const useUpdateLanguage = () => {
   const queryClient = useQueryClient()
 
   return useMutation<
-    ResponseWithMessage,
+    Language,
     HTTPError,
     { languageId: number; body: LanguageBody }
   >({
     mutationFn: languagesApi.update,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [LANGUAGES],
       })
 
       notifications.show({
         title: 'Успешно',
-        message: data.message,
+        message: '',
         color: 'green',
       })
     },

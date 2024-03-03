@@ -1,51 +1,74 @@
-import { MRT_ColumnDef } from 'mantine-react-table'
-import {
-  useDeleteLanguange,
-  useFetchLanguages,
-} from '../queries/languages-queries'
-import { Language } from '../types/language'
-import { Table } from '@/shared/ui/table/table'
 import { useListParams } from '@/shared/hooks/user-list-params'
+import { useDeleteProduct, useFetchProducts } from '../queries/products-queries'
+import { useFetchLanguages } from '@/features/languages/queries/languages-queries'
+import { MRT_ColumnDef } from 'mantine-react-table'
+import { Products } from '../types/products'
+import { Table } from '@/shared/ui/table/table'
 import { modals } from '@mantine/modals'
 import { MODALS } from '@/shared/ui/custom-modals/modals'
-import { EditLanguage } from './edit-language'
+import { useNavigate } from 'react-router-dom'
 
-export const LanguagesList = () => {
+export const ProductsList = () => {
+  const navigate = useNavigate()
+
   const { globalFilter, pagination, setGlobalFilter, setPagination } =
     useListParams()
 
   const {
-    data: languages,
+    data: products,
     isFetching,
     isError,
     error,
-  } = useFetchLanguages({
+  } = useFetchProducts({
     page: pagination.pageIndex + 1,
     limit: pagination.pageSize,
     keyword: globalFilter,
   })
-  const deleteMutation = useDeleteLanguange()
+  const deleteMutation = useDeleteProduct()
 
-  const columns: MRT_ColumnDef<Language>[] = [
+  const { data: languages } = useFetchLanguages()
+
+  const title = Array.isArray(languages?.data)
+    ? languages.data.map((language) => ({
+        accessorKey: `title.${language.locale}`,
+        header: `Название ${language.name}`,
+      }))
+    : []
+
+  const description = Array.isArray(languages?.data)
+    ? languages.data.map((language) => ({
+        accessorKey: `description.${language.locale}`,
+        header: `Описание ${language.name}`,
+        maxSize: 200,
+      }))
+    : []
+
+  const columns: MRT_ColumnDef<Products>[] = [
     {
       accessorKey: 'id',
       header: 'ID',
+      size: 70,
     },
     {
-      accessorKey: 'name',
-      header: 'Название',
+      accessorKey: 'image',
+      header: 'Фото',
+      size: 100,
+      Cell: ({ cell }) => (
+        <img
+          style={{ width: '100px', height: '100px' }}
+          src={cell.getValue<string>()}
+        />
+      ),
     },
     {
-      accessorKey: 'locale',
-      header: 'Язык',
+      accessorKey: 'category.ru',
+      header: 'Категория',
     },
+    ...title,
+    ...description,
   ]
-
   const handleUpdate = (id: number) => {
-    modals.open({
-      title: 'Редактирование языка',
-      children: <EditLanguage languageId={id} />,
-    })
+    navigate(`update/${id}`)
   }
 
   const handleDelete = (id: number) => {
@@ -65,8 +88,8 @@ export const LanguagesList = () => {
 
   return (
     <Table
-      data={languages?.data ?? []}
-      columns={columns}
+      data={products?.data ?? []}
+      columns={[...columns]}
       onUpdate={handleUpdate}
       onDelete={handleDelete}
       state={{
@@ -83,7 +106,7 @@ export const LanguagesList = () => {
         setGlobalFilter(value ?? '')
       }}
       onPaginationChange={setPagination}
-      rowCount={languages?.count}
+      rowCount={products?.count}
     />
   )
 }

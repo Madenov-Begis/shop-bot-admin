@@ -1,15 +1,13 @@
 import { modals } from '@mantine/modals'
-
-import { LanguageForm } from './language-form'
-import { useCreateLanguage } from '../queries/languages-queries'
-import { LanguageBody } from '../types/language'
-
+import { useCreateCategory } from '../queries/categories-queries'
+import { CategoryBody } from '../types/categories'
 import { ErrorAlert } from '@/shared/ui/error-alert/error-alert'
+import { CategoryForm } from './category-form'
 
-export const CreateLanguage = () => {
-  const createMutation = useCreateLanguage()
+export const Createcategory = () => {
+  const createMutation = useCreateCategory()
 
-  const handleSubmit = async (body: LanguageBody) => {
+  const handleSubmit = async (body: CategoryBody) => {
     try {
       await createMutation.mutateAsync(body)
       modals.closeAll()
@@ -24,7 +22,7 @@ export const CreateLanguage = () => {
         <ErrorAlert message={createMutation.error.message} mb="md" />
       )}
 
-      <LanguageForm
+      <CategoryForm
         submitFn={handleSubmit}
         loading={createMutation.isPending}
         submitTitle="Добавить"

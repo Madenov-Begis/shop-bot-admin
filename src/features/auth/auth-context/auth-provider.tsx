@@ -10,12 +10,12 @@ import { authApi } from '../api/auth-api'
 import { User } from '../types/user'
 import { LoginBody } from '../types/login'
 
-// import { COOKIES } from '@/shared/constants/cookies'
-
 interface AuthProviderProps extends PropsWithChildren {
   authored: boolean
   authorizedUser: User | null
 }
+
+import Cookies from 'js-cookie'
 
 export const AuthProvider = (props: AuthProviderProps) => {
   const { authored, authorizedUser, children } = props
@@ -25,10 +25,10 @@ export const AuthProvider = (props: AuthProviderProps) => {
 
   const login = async (body: LoginBody) => {
     try {
-      const { data } = await authApi.login(body)
-      // Cookies.set(COOKIES.TOKEN, data.token, {
-      //   expires: 7,
-      // })
+      const res = await authApi.login(body)
+      Cookies.set('Authentication', res.token, {
+        expires: 7,
+      })
 
       notifications.show({
         title: 'Успешно',
@@ -37,7 +37,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
       })
 
       setIsAuth(true)
-      setUser(data.user)
+      setUser(res)
     } catch (error) {
       return Promise.reject(error)
     }

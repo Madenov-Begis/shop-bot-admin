@@ -6,6 +6,7 @@ import { PatternFormat } from 'react-number-format'
 import { useAuth } from '../auth-context/auth-context'
 
 import { HTTPError } from '@/shared/types/http'
+import { notifications } from '@mantine/notifications'
 
 export const LoginForm = () => {
   const { login } = useAuth()
@@ -38,7 +39,11 @@ export const LoginForm = () => {
       setIsLoading(false)
     } catch (error) {
       const err = error as HTTPError
-      if (err.errors) return form.setErrors(err.errors)
+      notifications.show({
+        title: 'Ошибка',
+        message: err.message,
+        color: 'red',
+      })
       setError(err.message)
       setIsLoading(false)
     }

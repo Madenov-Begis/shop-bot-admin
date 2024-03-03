@@ -14,9 +14,11 @@ import { ROUTES } from '../../constants/routes'
 import { AuthLayout } from '@/shared/layouts/auth-layout/auth-layout'
 
 const LoginPage = lazy(() => import('@/pages/auth/login'))
-const CashbacksPage = lazy(() => import('@/pages/cashbacks/list'))
 const LanguagesPage = lazy(() => import('@/pages/languages/list'))
-const CatalogsPage = lazy(() => import('@/pages/catalogs/list'))
+const ProductsPage = lazy(() => import('@/pages/products/list'))
+const CreateProduct = lazy(() => import('@/pages/products/create'))
+const UpdateProduct = lazy(() => import('@/pages/products/update'))
+const CategoryPage = lazy(() => import('@/pages/categories/list'))
 
 export const router = createBrowserRouter([
   {
@@ -34,16 +36,24 @@ export const router = createBrowserRouter([
                 element: <MainLayout />,
                 children: [
                   {
-                    path: ROUTES.CASHBACKS,
-                    element: <CashbacksPage />,
-                  },
-                  {
                     path: ROUTES.LANGUAGES,
                     element: <LanguagesPage />,
                   },
                   {
-                    path: ROUTES.CATALOGS,
-                    element: <CatalogsPage />,
+                    path: ROUTES.PRODUCTS,
+                    element: <ProductsPage />,
+                  },
+                  {
+                    path: ROUTES.CATEGORIES,
+                    element: <CategoryPage />,
+                  },
+                  {
+                    path: ROUTES.PRODUCTSCREATE,
+                    element: <CreateProduct />,
+                  },
+                  {
+                    path: ROUTES.PRODUCTSUPDATE,
+                    element: <UpdateProduct />,
                   },
                 ],
               },

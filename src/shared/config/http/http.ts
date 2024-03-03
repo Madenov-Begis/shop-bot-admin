@@ -1,20 +1,19 @@
 import axios from 'axios'
-// import Cookies from 'js-cookie'
+import Cookies from 'js-cookie'
 
 import { BASE_URL } from '@/shared/constants/base-url'
-// import { COOKIES } from '@/shared/constants/cookies'
-// import { LOCALE_STORAGE } from '@/shared/constants/local-storage'
 
 export const http = axios.create({
   baseURL: BASE_URL,
   headers: {
     Accept: 'application/json',
   },
+  withCredentials: false,
 })
 
 http.interceptors.request.use(
   (config) => {
-    // config.headers.Authorization = `Bearer ${Cookies.get(COOKIES.TOKEN)}`
+    config.headers.Authorization = `Bearer ${Cookies.get('Authentication')}`
 
     return config
   },
@@ -28,7 +27,7 @@ http.interceptors.response.use(
   (error) => {
     if (error.response) {
       if (error.response.status === 401) {
-        // Cookies.remove(COOKIES.TOKEN)
+        Cookies.remove('Authentication')
         return Promise.reject({
           message: error.response.data.message,
         })

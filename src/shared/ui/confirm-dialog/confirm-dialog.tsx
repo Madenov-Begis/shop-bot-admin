@@ -11,9 +11,9 @@ export const ConfirmDialog = (props: ContextModalProps<ConfirmDialogProps>) => {
   const { context, id, innerProps } = props
   const [isLoading, setIsLoading] = useState(false)
 
-  const confirm = () => {
+  const confirm = async () => {
     setIsLoading(true)
-    innerProps.onConfirm(id).finally(() => setIsLoading(false))
+    await innerProps.onConfirm(id).finally(() => setIsLoading(false))
   }
 
   const closeModal = () => {

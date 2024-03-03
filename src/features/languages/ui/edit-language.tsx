@@ -43,14 +43,14 @@ export const EditLanguage = (props: EditLanguageProps) => {
         </Center>
       )}
 
-      {isSuccess && !isFetching && (
+      {isSuccess && (
         <>
-          {updateMutation.isError && !updateMutation.error.errors && (
+          {updateMutation.isError && (
             <ErrorAlert message={updateMutation.error.message} mb="md" />
           )}
 
           <LanguageForm
-            initialValues={language.data}
+            initialValues={{locale: language.locale, name: language.name}}
             submitFn={handleSubmit}
             loading={updateMutation.isPending}
             submitTitle="Сохранить"
