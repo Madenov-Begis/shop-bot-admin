@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mantine/charts": "^7.5.0",
     "@mantine/core": "^7.5.0",
     "@mantine/dropzone": "^7.5.0",
     "@mantine/form": "^7.5.0",
@@ -20,12 +21,14 @@
     "@tanstack/react-query": "^5.17.19",
     "@tanstack/react-query-devtools": "^5.18.1",
     "axios": "^1.6.7",
+    "dayjs": "^1.11.10",
     "js-cookie": "^3.0.5",
     "mantine-react-table": "^2.0.0-alpha.15",
     "nanoid": "^5.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.21.3"
+    "react-router-dom": "^6.21.3",
+    "recharts": "^2.12.2"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",

@@ -7,11 +7,3 @@ export const initLanguages = (langs: Language[], b: unknown) => {
     }, {}),
   }
 }
-
-export const initKeys = (langs: Language[], b: unknown, name: string) => {
-  return {
-    ...langs.reduce((acc, lang) => {
-      return { ...acc, [name + '_' + lang.locale]: b }
-    }),
-  }
-}

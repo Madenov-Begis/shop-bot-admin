@@ -14,6 +14,7 @@ import { ROUTES } from '../../constants/routes'
 import { AuthLayout } from '@/shared/layouts/auth-layout/auth-layout'
 
 const LoginPage = lazy(() => import('@/pages/auth/login'))
+const HomePage = lazy(() => import('@/pages/home-page'))
 const LanguagesPage = lazy(() => import('@/pages/languages/list'))
 const ProductsPage = lazy(() => import('@/pages/products/list'))
 const CreateProduct = lazy(() => import('@/pages/products/create'))
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
                 path: ROUTES.HOME,
                 element: <MainLayout />,
                 children: [
+                  {
+                    path: '',
+                    element: <HomePage />,
+                  },
                   {
                     path: ROUTES.LANGUAGES,
                     element: <LanguagesPage />,
