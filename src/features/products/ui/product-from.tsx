@@ -11,6 +11,7 @@ import {
   Image,
   ActionIcon,
   Flex,
+  Switch,
 } from '@mantine/core'
 import { UseFormReturnType, isNotEmpty, useForm } from '@mantine/form'
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone'
@@ -33,6 +34,7 @@ const initialData = (languages: Language[]) => {
     category_id: undefined,
     image: [],
     price: undefined,
+    status: true,
   }
 }
 
@@ -70,10 +72,9 @@ export const ProductForm = withLangs<ProductFormProps>(
     const form = useForm<ProductBody>({
       initialValues,
       validate: {
+        title: initLanguages(languages, isNotEmpty('Обязательное поле')),
         price: isNotEmpty('Обязательное поле'),
         category_id: isNotEmpty('Обязательное поле'),
-        description: initLanguages(languages, isNotEmpty('Обязательное поле')),
-        title: initLanguages(languages, isNotEmpty('Обязательное поле')),
         image: isNotEmpty('Обязательное поле'),
       },
     })
@@ -150,7 +151,7 @@ export const ProductForm = withLangs<ProductFormProps>(
             <Grid.Col span={6}>
               <Dropzone
                 multiple={false}
-                accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
+                accept={[MIME_TYPES.png, MIME_TYPES.jpeg, MIME_TYPES.webp]}
                 onDrop={(files) => {
                   form.setFieldValue('image', files)
                 }}
@@ -289,18 +290,23 @@ export const ProductForm = withLangs<ProductFormProps>(
               <Text>Вы не добавили язык</Text>
             </div>
           )}
-        </Stack>
 
-        <Group justify="center" mt="lg">
-          <Button
-            type="submit"
-            size="md"
-            loading={loading}
-            disabled={!form.isDirty()}
-          >
-            {submitTitle}
-          </Button>
-        </Group>
+          <Group justify="space-between" mt="lg">
+            <Switch
+              defaultChecked={form.values.status}
+              label="Активность"
+              {...form.getInputProps('status')}
+            />
+            <Button
+              type="submit"
+              size="md"
+              loading={loading}
+              disabled={!form.isDirty()}
+            >
+              {submitTitle}
+            </Button>
+          </Group>
+        </Stack>
       </form>
     )
   }

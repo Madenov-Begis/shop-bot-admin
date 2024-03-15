@@ -8,6 +8,7 @@ export interface Products {
   title: FieldWithLanguages
   description: FieldWithLanguages
   category: FieldWithLanguages
+  status: number
 }
 
 export interface ProductBody {
@@ -16,4 +17,5 @@ export interface ProductBody {
   image: File[] | string[]
   price: number | undefined
   category_id: string | undefined
+  status: boolean
 }

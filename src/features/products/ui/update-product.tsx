@@ -4,10 +4,11 @@ import { useFetchProduct, useUpdateProduct } from '../queries/products-queries'
 import { ProductBody } from '../types/products'
 import { ProductForm } from './product-from'
 import { FormEvent } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { UseFormReturnType } from '@mantine/form'
 
 export const UpdateProduct = () => {
+  const navigate = useNavigate()
   const { id } = useParams()
 
   const {
@@ -21,16 +22,23 @@ export const UpdateProduct = () => {
   const updateMutation = useUpdateProduct()
 
   const handleSubmit = async ({
+    data,
     event,
   }: {
+    data: ProductBody
     event?: FormEvent<HTMLFormElement>
   }) => {
     const formData = new FormData(event?.currentTarget)
+
+    if (typeof data.image[0] !== 'string') formData.set('image', data.image[0])
+
+    formData.set('status', data.status ? '1' : '0')
 
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-expect-error
       await updateMutation.mutateAsync({ id, body: formData })
+      navigate('/products')
     } catch (error) {
       return Promise.reject(error)
     }
@@ -69,6 +77,7 @@ export const UpdateProduct = () => {
               image: [product.image],
               price: product.price,
               title: product.title,
+              status: Boolean(product.status),
             }}
             submitFn={handleSubmit}
             loading={updateMutation.isPending}

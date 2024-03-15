@@ -7,6 +7,7 @@ import { Table } from '@/shared/ui/table/table'
 import { modals } from '@mantine/modals'
 import { MODALS } from '@/shared/ui/custom-modals/modals'
 import { useNavigate } from 'react-router-dom'
+import { Badge } from '@mantine/core'
 
 export const ProductsList = () => {
   const navigate = useNavigate()
@@ -47,7 +48,17 @@ export const ProductsList = () => {
     {
       accessorKey: 'id',
       header: 'ID',
-      size: 70,
+      size: 60,
+    },
+    {
+      accessorKey: 'status',
+      header: 'Статус',
+      Cell: ({ cell }) => (
+        <Badge color={cell.getValue() ? '' : 'red'} p={'sm'}>
+          {cell.getValue() ? 'Активный' : 'Неактивный'}
+        </Badge>
+      ),
+      size: 100
     },
     {
       accessorKey: 'image',

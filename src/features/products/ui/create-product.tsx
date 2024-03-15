@@ -4,8 +4,11 @@ import { ProductForm } from './product-from'
 import { ProductBody } from '../types/products'
 import { FormEvent } from 'react'
 import { UseFormReturnType } from '@mantine/form'
+import { useNavigate } from 'react-router-dom'
 
 export const CreateProductList = () => {
+  const navigate = useNavigate()
+
   const createMutation = useCreateProduct()
 
   const handleSubmit = async ({
@@ -19,10 +22,13 @@ export const CreateProductList = () => {
 
     formData.set('image', data.image ? data.image[0] : '')
 
+    formData.set('status', data.status ? '1' : '0')
+
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-expect-error
       await createMutation.mutateAsync(formData)
+      navigate('/products')
     } catch (error) {
       return Promise.reject(error)
     }
