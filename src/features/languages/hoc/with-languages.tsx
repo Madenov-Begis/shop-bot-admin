@@ -28,7 +28,7 @@ export const withLangs = <T,>(
         </Center>
       )
     if (isError) return <ErrorAlert message={'Ошибка при загрузке языков'} />
-    if (isSuccess) return <Component {...props} languages={languages.data} />
+    if (isSuccess) return <Component {...props} languages={languages.data.data} />
   }
 
   ComponentWithLanguages.displayName = `withLanguages(${displayName})`

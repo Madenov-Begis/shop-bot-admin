@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 import { authApi } from '../api/auth-api'
 
 export const checkAuth = async () => {
-  const token = Cookies.get('Authentication')
+  const token = Cookies.get('token')
 
   if (token) {
     try {

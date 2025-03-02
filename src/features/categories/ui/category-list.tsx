@@ -4,11 +4,10 @@ import {
   useFetchCategories,
 } from '../queries/categories-queries'
 import { MRT_ColumnDef } from 'mantine-react-table'
-import { DynamicDataItem } from '../types/categories'
+import { Categories } from '../types/categories'
 import { modals } from '@mantine/modals'
 import { MODALS } from '@/shared/ui/custom-modals/modals'
 import { Table } from '@/shared/ui/table/table'
-import { useFetchLanguages } from '@/features/languages/queries/languages-queries'
 import { UpdateCategory } from './update-category'
 
 export const CategoryList = () => {
@@ -28,23 +27,16 @@ export const CategoryList = () => {
 
   const deleteMutation = useDeleteCategory()
 
-  const { data: languages } = useFetchLanguages()
-
-  const costLang = Array.isArray(languages?.data)
-    ? languages.data.map((language) => ({
-        accessorKey: `${language.locale}`,
-        header: `Название ${language.name}`,
-      }))
-    : []
-
-  const columns: MRT_ColumnDef<DynamicDataItem>[] = [
+  const columns: MRT_ColumnDef<Categories>[] = [
     {
       accessorKey: 'id',
       header: 'ID',
       size: 70,
     },
-
-    ...costLang,
+    {
+      accessorKey: 'name.ru',
+      header: 'Название',
+    },
   ]
 
   const handleUpdate = (id: number) => {
@@ -71,7 +63,7 @@ export const CategoryList = () => {
 
   return (
     <Table
-      data={products?.data ?? []}
+      data={products?.data.data ?? []}
       columns={[...columns]}
       onUpdate={handleUpdate}
       onDelete={handleDelete}
@@ -89,7 +81,7 @@ export const CategoryList = () => {
         setGlobalFilter(value ?? '')
       }}
       onPaginationChange={setPagination}
-      rowCount={products?.count}
+      rowCount={products?.data.count}
     />
   )
 }

@@ -2,16 +2,18 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { productsApi } from '../api/products-api'
 import { ListParams } from '@/shared/types/list-params'
 import { notifications } from '@mantine/notifications'
+import { HTTPError, ResponseWithData, ResponseWithPagination } from '@/shared/types/http'
+import { Products } from '../types/products'
 
 export const useFetchProducts = (params: ListParams) => {
-  return useQuery({
+  return useQuery<ResponseWithPagination<Products[]>, HTTPError>({
     queryFn: () => productsApi.getAll(params),
     queryKey: ['products', params],
   })
 }
 
 export const useFetchProduct = (id: string | undefined) => {
-  return useQuery({
+  return useQuery<ResponseWithData<Products>, HTTPError>({
     queryKey: ['product', id],
     queryFn: () => productsApi.getOne(id),
   })

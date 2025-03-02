@@ -1,8 +1,6 @@
 import { PropsWithChildren, useState } from 'react'
 import { notifications } from '@mantine/notifications'
 
-// import Cookies from 'js-cookie'
-
 import { AuthContext } from './auth-context'
 
 import { authApi } from '../api/auth-api'
@@ -26,9 +24,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
   const login = async (body: LoginBody) => {
     try {
       const res = await authApi.login(body)
-      Cookies.set('Authentication', res.token, {
-        expires: 7,
-      })
+      Cookies.set('token', res.token)
 
       notifications.show({
         title: 'Успешно',
@@ -37,7 +33,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
       })
 
       setIsAuth(true)
-      setUser(res)
+      setUser(res.user)
     } catch (error) {
       return Promise.reject(error)
     }
@@ -50,7 +46,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
         message: 'Вы вышли из системы',
         color: 'green',
       })
-      // Cookies.remove(COOKIES.TOKEN)
+      Cookies.remove('token')
       setIsAuth(false)
       setUser(null)
     })

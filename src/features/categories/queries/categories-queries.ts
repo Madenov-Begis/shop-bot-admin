@@ -2,16 +2,16 @@ import { ListParams } from '@/shared/types/list-params'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { categoriesApi } from '../api/categories-api'
 import { notifications } from '@mantine/notifications'
-import { CategoryBody, DynamicDataItem } from '../types/categories'
+import { Categories, CategoryBody } from '../types/categories'
 import {
   HTTPError,
+  ResponseWithData,
   ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
-import { FieldWithLanguages } from '@/features/languages/types/field-with-langagues'
 
 export const useFetchCategories = (params: ListParams) => {
-  return useQuery<ResponseWithPagination<DynamicDataItem[]>, HTTPError>({
+  return useQuery<ResponseWithPagination<Categories[]>, HTTPError>({
     queryKey: ['categories', params],
     queryFn: () => categoriesApi.getAll(params),
   })
@@ -24,7 +24,7 @@ export const useFetchCategoryList = () => {
 }
 
 export const useFetchCategory = (id: number) => {
-  return useQuery<FieldWithLanguages, HTTPError>({
+  return useQuery<ResponseWithData<Categories>, HTTPError>({
     queryKey: ['category', id],
     queryFn: () => categoriesApi.getOne(id),
   })

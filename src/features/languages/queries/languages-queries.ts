@@ -11,6 +11,7 @@ import { Language, LanguageBody } from '../types/language'
 
 import {
   HTTPError,
+  ResponseWithData,
   ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
@@ -28,7 +29,7 @@ export const useFetchLanguages = (params?: ListParams) => {
 }
 
 export const useFetchLanguage = (languageId: number) => {
-  return useQuery<Language, HTTPError>({
+  return useQuery<ResponseWithData<Language>, HTTPError>({
     queryKey: ['language', languageId],
     queryFn: () => languagesApi.getOne(languageId),
   })

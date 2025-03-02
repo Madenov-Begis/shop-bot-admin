@@ -7,16 +7,16 @@ import { useState } from 'react'
 
 export const UsersChart = () => {
   const [start, setStart] = useState<Date | null>(
-    new Date(Date.now() - 432000000 * 2)
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1)
   )
   const [end, setEnd] = useState<Date | null>(new Date())
 
   const { data: usersChart } = useUserChart({
-    start: dayjs(start).format('YYYY-MM-DD'),
-    end: dayjs(end).format('YYYY-MM-DD'),
+    start_date: dayjs(start).format('YYYY-MM-DD'),
+    end_date: dayjs(end).format('YYYY-MM-DD'),
   })
 
-  const changedData = usersChart?.map((item) => {
+  const changedData = usersChart?.data.map((item) => {
     return {
       date: new Date(item.date).toLocaleDateString(),
       Пользователи: +item.count,
@@ -25,7 +25,9 @@ export const UsersChart = () => {
 
   return (
     <Stack>
-      <Text fw={600} size='xl'>Количество посещений</Text>
+      <Text fw={600} size="xl">
+        Количество посещений
+      </Text>
 
       <Group>
         <DateInput
@@ -47,9 +49,7 @@ export const UsersChart = () => {
       <AreaChart
         mt={'lg'}
         h={300}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-expect-error
-        data={changedData}
+        data={changedData ?? []}
         dataKey="date"
         series={[{ name: 'Пользователи', color: 'indigo.6' }]}
         curveType="linear"

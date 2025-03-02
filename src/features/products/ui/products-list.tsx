@@ -1,6 +1,5 @@
 import { useListParams } from '@/shared/hooks/user-list-params'
 import { useDeleteProduct, useFetchProducts } from '../queries/products-queries'
-import { useFetchLanguages } from '@/features/languages/queries/languages-queries'
 import { MRT_ColumnDef } from 'mantine-react-table'
 import { Products } from '../types/products'
 import { Table } from '@/shared/ui/table/table'
@@ -27,23 +26,6 @@ export const ProductsList = () => {
   })
   const deleteMutation = useDeleteProduct()
 
-  const { data: languages } = useFetchLanguages()
-
-  const title = Array.isArray(languages?.data)
-    ? languages.data.map((language) => ({
-        accessorKey: `title.${language.locale}`,
-        header: `Название ${language.name}`,
-      }))
-    : []
-
-  const description = Array.isArray(languages?.data)
-    ? languages.data.map((language) => ({
-        accessorKey: `description.${language.locale}`,
-        header: `Описание ${language.name}`,
-        maxSize: 200,
-      }))
-    : []
-
   const columns: MRT_ColumnDef<Products>[] = [
     {
       accessorKey: 'id',
@@ -51,14 +33,14 @@ export const ProductsList = () => {
       size: 60,
     },
     {
-      accessorKey: 'status',
+      accessorKey: 'is_active',
       header: 'Статус',
       Cell: ({ cell }) => (
         <Badge color={cell.getValue() ? '' : 'red'} p={'sm'}>
           {cell.getValue() ? 'Активный' : 'Неактивный'}
         </Badge>
       ),
-      size: 100
+      size: 100,
     },
     {
       accessorKey: 'image',
@@ -72,11 +54,17 @@ export const ProductsList = () => {
       ),
     },
     {
-      accessorKey: 'category.ru',
+      accessorKey: 'name.ru',
+      header: 'Название',
+    },
+    {
+      accessorKey: 'category.name.ru',
       header: 'Категория',
     },
-    ...title,
-    ...description,
+    {
+      accessorKey: 'price',
+      header: 'Цена',
+    },
   ]
   const handleUpdate = (id: number) => {
     navigate(`update/${id}`)
@@ -99,8 +87,8 @@ export const ProductsList = () => {
 
   return (
     <Table
-      data={products?.data ?? []}
-      columns={[...columns]}
+      data={products?.data.data ?? []}
+      columns={columns}
       onUpdate={handleUpdate}
       onDelete={handleDelete}
       state={{
@@ -117,7 +105,7 @@ export const ProductsList = () => {
         setGlobalFilter(value ?? '')
       }}
       onPaginationChange={setPagination}
-      rowCount={products?.count}
+      rowCount={products?.data.count}
     />
   )
 }

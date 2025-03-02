@@ -1,12 +1,19 @@
 import { http } from '@/shared/config/http'
-import { UserCart } from '../types/home-page'
+import { UserChart } from '../types/home-page'
+import { ResponseWithData } from '@/shared/types/http'
 
 export const homePageAPi = {
-  getUserStatistics: async ({ start, end }: { start: string; end: string }) => {
-    const { data } = await http<UserCart[]>('/customer/chart', {
+  getUserStatistics: async ({
+    start_date,
+    end_date,
+  }: {
+    start_date: string
+    end_date: string
+  }) => {
+    const { data } = await http<ResponseWithData<UserChart[]>>('/users/chart', {
       params: {
-        start,
-        end,
+        start_date,
+        end_date,
       },
     })
 

@@ -5,7 +5,7 @@ import { Users } from '../types/users-type'
 
 export const usersApi = {
   getAll: async (params: ListParams) => {
-    const { data } = await http<ResponseWithPagination<Users[]>>('/customer', {
+    const { data } = await http<ResponseWithPagination<Users[]>>('/users', {
       params,
     })
 

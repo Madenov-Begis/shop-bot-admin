@@ -1,4 +1,3 @@
-import { modals } from '@mantine/modals'
 import {
   useFetchCategory,
   useUpdateCategory,
@@ -20,11 +19,8 @@ export const UpdateCategory = ({ id }: { id: number }) => {
   const updateMutation = useUpdateCategory()
 
   const handleSubmit = async (data: CategoryBody) => {
-    delete data.name.id
-
     try {
       await updateMutation.mutateAsync({ id, body: data })
-      modals.closeAll()
     } catch (error) {
       return Promise.reject(error)
     }
@@ -47,7 +43,7 @@ export const UpdateCategory = ({ id }: { id: number }) => {
           )}
 
           <CategoryForm
-            initialValues={{ name: category }}
+            initialValues={{ name: category.data.name }}
             submitFn={handleSubmit}
             loading={updateMutation.isPending}
             submitTitle="Сохранить"

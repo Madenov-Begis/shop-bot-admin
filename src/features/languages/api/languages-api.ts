@@ -1,6 +1,7 @@
 import { http } from '@/shared/config/http'
 import { Language, LanguageBody } from '../types/language'
 import {
+  ResponseWithData,
   ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
@@ -18,7 +19,9 @@ export const languagesApi = {
   },
 
   getOne: async (languageId: number) => {
-    const { data } = await http<Language>(`${RESOURCE}/${languageId}`)
+    const { data } = await http<ResponseWithData<Language>>(
+      `${RESOURCE}/${languageId}`
+    )
 
     return data
   },

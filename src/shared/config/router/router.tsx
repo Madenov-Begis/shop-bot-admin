@@ -1,4 +1,3 @@
-import { lazy } from 'react'
 import { createBrowserRouter, defer } from 'react-router-dom'
 
 import { AppProvider } from '@/providers/app-provider'
@@ -13,14 +12,14 @@ import { checkAuth } from '@/features/auth/utils/check-auth'
 import { ROUTES } from '../../constants/routes'
 import { AuthLayout } from '@/shared/layouts/auth-layout/auth-layout'
 
-const LoginPage = lazy(() => import('@/pages/auth/login'))
-const HomePage = lazy(() => import('@/pages/home-page'))
-const LanguagesPage = lazy(() => import('@/pages/languages/list'))
-const ProductsPage = lazy(() => import('@/pages/products/list'))
-const CreateProduct = lazy(() => import('@/pages/products/create'))
-const UpdateProduct = lazy(() => import('@/pages/products/update'))
-const CategoryPage = lazy(() => import('@/pages/categories/list'))
-const UsersPage = lazy(() => import('@/pages/users/list'))
+import LoginPage from '@/pages/auth/login'
+import HomePage from '@/pages/home-page'
+import LanguagesPage from '@/pages/languages/list'
+import ProductsPage from '@/pages/products/list'
+import CreateProduct from '@/pages/products/create'
+import UpdateProduct from '@/pages/products/update'
+import CategoryPage from '@/pages/categories/list'
+import UsersPage from '@/pages/users/list'
 
 export const router = createBrowserRouter([
   {

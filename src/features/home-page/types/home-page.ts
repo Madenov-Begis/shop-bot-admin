@@ -1,4 +1,4 @@
-export interface UserCart {
+export interface UserChart {
   date: string
   count: string
 }

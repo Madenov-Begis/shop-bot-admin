@@ -7,6 +7,7 @@ import { HTTPError } from '@/shared/types/http'
 import { Stack, TextInput, Text, Group, Button } from '@mantine/core'
 import { CategoryBody } from '../types/categories'
 import { notifications } from '@mantine/notifications'
+import { modals } from '@mantine/modals'
 
 const initialData = (languages: Language[]) => {
   return {
@@ -38,8 +39,10 @@ export const CategoryForm = withLangs<CategoryFormProps>(
 
     const handleSubmit = async (data: typeof form.values) => {
       try {
-        await submitFn(data)
-        form.reset()
+        await submitFn(data).then(() => {
+          form.reset()
+          modals.closeAll()
+        })
       } catch (error) {
         const err = error as HTTPError
         notifications.show({

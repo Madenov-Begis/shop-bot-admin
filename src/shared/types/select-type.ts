@@ -1,4 +1,4 @@
-export interface SelectType {
+export type SelectType = {
   id: number
-  name: string
+  name: Record<string, string>
 }

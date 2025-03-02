@@ -6,13 +6,12 @@ interface CategoriesSelect extends SelectProps {}
 export const CategoriesSelect = (props: CategoriesSelect) => {
   const { data: categoryList } = useFetchCategoryList()
 
-  const selectData = categoryList?.map((item) => {
+  const selectData = categoryList?.data?.map((item) => {
     return {
-      label: item.ru,
+      label: item.name.ru.toString(),
       value: item.id.toString(),
     }
   })
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-expect-error
+
   return <Select data={selectData} {...props} />
 }

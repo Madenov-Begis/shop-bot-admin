@@ -19,14 +19,13 @@ export const CreateProductList = () => {
     data: ProductBody
   }) => {
     const formData = new FormData(event?.currentTarget)
+    console.log(data)
 
     formData.set('image', data.image ? data.image[0] : '')
 
-    formData.set('status', data.status ? '1' : '0')
+    formData.set('is_active', data.is_active ? '1' : '0')
 
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-expect-error
       await createMutation.mutateAsync(formData)
       navigate('/products')
     } catch (error) {

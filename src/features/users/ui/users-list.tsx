@@ -3,6 +3,8 @@ import { Table } from '@/shared/ui/table/table'
 import { useFetchUsers } from '../queries/users-queries'
 import { MRT_ColumnDef } from 'mantine-react-table'
 import { Users } from '../types/users-type'
+import dayjs from 'dayjs'
+import { useMemo } from 'react'
 
 export const UsersList = () => {
   const { globalFilter, pagination, setGlobalFilter, setPagination } =
@@ -19,37 +21,49 @@ export const UsersList = () => {
     keyword: globalFilter,
   })
 
-  const columns: MRT_ColumnDef<Users>[] = [
-    {
-      accessorKey: 'id',
-      header: 'ID',
-      size: 70,
-    },
-    {
-      accessorKey: 'user_id',
-      header: 'USER_ID',
-    },
-    {
-      accessorKey: 'first_name',
-      header: 'Имя',
-    },
-    {
-      accessorKey: 'last_name',
-      header: 'Фамилия',
-    },
-    {
-      accessorKey: 'username',
-      header: 'USER_NAME',
-    },
-    {
-      accessorKey: 'phone',
-      header: 'Номер телефонаы',
-    },
-  ]
+  const columns: MRT_ColumnDef<Users>[] = useMemo(
+    () => [
+      {
+        accessorKey: 'id',
+        header: 'ID',
+        size: 70,
+      },
+      {
+        accessorKey: 'telegram_id',
+        header: 'Telegram_ID',
+      },
+      {
+        accessorKey: 'first_name',
+        header: 'Имя',
+      },
+      {
+        accessorKey: 'last_name',
+        header: 'Фамилия',
+      },
+      {
+        accessorKey: 'username',
+        header: 'USER_NAME',
+      },
+      {
+        accessorKey: 'phone',
+        header: 'Номер телефонаы',
+      },
+      {
+        accessorKey: 'created_at',
+        header: 'Дата создания',
+        Cell: ({ cell }) => {
+          return (
+            <div>{dayjs(String(cell.getValue())).format('DD-MM-YYYY')}</div>
+          )
+        },
+      },
+    ],
+    []
+  )
 
   return (
     <Table
-      data={products?.data ?? []}
+      data={products?.data.data ?? []}
       columns={[...columns]}
       enableRowActions={false}
       state={{
@@ -66,7 +80,7 @@ export const UsersList = () => {
         setGlobalFilter(value ?? '')
       }}
       onPaginationChange={setPagination}
-      rowCount={products?.count}
+      rowCount={products?.data.count}
     />
   )
 }

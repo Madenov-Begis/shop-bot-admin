@@ -1,11 +1,11 @@
 import { http } from '@/shared/config/http'
 
 import { LoginBody } from '../types/login'
-import { User } from '../types/user'
+import { AuthResponse, User } from '../types/user'
 
 export const authApi = {
   login: async (body: LoginBody) => {
-    const { data } = await http.post<User>('/auth/login', body)
+    const { data } = await http.post<AuthResponse>('/auth/login', body)
 
     return data
   },

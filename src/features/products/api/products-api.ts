@@ -1,9 +1,10 @@
 import { http } from '@/shared/config/http'
 import {
+  ResponseWithData,
   ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
-import { ProductBody, Products } from '../types/products'
+import {  Products } from '../types/products'
 import { ListParams } from '@/shared/types/list-params'
 
 export const productsApi = {
@@ -16,7 +17,7 @@ export const productsApi = {
     return data
   },
 
-  create: async (body: ProductBody) => {
+  create: async (body: FormData) => {
     const { data } = await http.post<ResponseWithMessage>('/product', body, {
       headers: {
         ['Content-Type']: 'multipart/form-data',
@@ -27,14 +28,14 @@ export const productsApi = {
   },
 
   getOne: async (id: string | undefined) => {
-    const { data } = await http<Products>(`/product/${id}`)
+    const { data } = await http<ResponseWithData<Products>>(`/product/${id}`)
 
     return data
   },
 
-  update: async ({ id, body }: { id: string | undefined; body: ProductBody }) => {
+  update: async ({ id, body }: { id: string | undefined; body: FormData }) => {
     const { data } = await http.post<ResponseWithMessage>(
-      `/product/${id}`,
+      `/product/update/${id}`,
       body
     )
 

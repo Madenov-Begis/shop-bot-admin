@@ -2,13 +2,22 @@ import { FieldWithLanguages } from '@/features/languages/types/field-with-langag
 
 export interface Products {
   id: number
-  price: number
-  image: string
-  category_d: number
-  title: FieldWithLanguages
+  name: FieldWithLanguages
   description: FieldWithLanguages
-  category: FieldWithLanguages
-  status: number
+  image: string
+  price: string
+  is_active: boolean
+  category: Category
+  created_at: string
+  updated_at: string
+}
+
+interface Category {
+  id: number
+  name: FieldWithLanguages
+  is_main: boolean
+  created_at: string
+  updated_at: string
 }
 
 export interface ProductBody {
@@ -17,5 +26,5 @@ export interface ProductBody {
   image: File[] | string[]
   price: number | undefined
   category_id: string | undefined
-  status: boolean
+  is_active: boolean
 }

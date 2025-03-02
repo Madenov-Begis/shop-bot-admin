@@ -34,7 +34,7 @@ const initialData = (languages: Language[]) => {
     category_id: undefined,
     image: [],
     price: undefined,
-    status: true,
+    is_active: true,
   }
 }
 
@@ -95,6 +95,7 @@ export const ProductForm = withLangs<ProductFormProps>(
         })
       }
     }
+    console.log(form.values)
 
     const previews = form.values.image?.map((image, index) => {
       let imageUrl: string | undefined
@@ -233,7 +234,7 @@ export const ProductForm = withLangs<ProductFormProps>(
               {languages.map((language) => {
                 return (
                   <TextInput
-                    name={`title_${language.locale}`}
+                    name={`title[${language.locale}]`}
                     key={language.id}
                     label={`Название ${language.locale}`}
                     placeholder={'Название'}
@@ -245,7 +246,7 @@ export const ProductForm = withLangs<ProductFormProps>(
               {languages.map((language) => {
                 return (
                   <TextInput
-                    name={`description_${language.locale}`}
+                    name={`description[${language.locale}]`}
                     key={language.id}
                     label={`Описание ${language.locale}`}
                     placeholder={'Описание'}
@@ -292,11 +293,7 @@ export const ProductForm = withLangs<ProductFormProps>(
           )}
 
           <Group justify="space-between" mt="lg">
-            <Switch
-              defaultChecked={form.values.status}
-              label="Активность"
-              {...form.getInputProps('status')}
-            />
+            <Switch label="Активность" {...form.getInputProps('is_active', {type: 'checkbox'})} />
             <Button
               type="submit"
               size="md"

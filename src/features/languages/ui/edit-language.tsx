@@ -32,6 +32,7 @@ export const EditLanguage = (props: EditLanguageProps) => {
       return Promise.reject(error)
     }
   }
+  console.log(language)
 
   return (
     <>
@@ -50,7 +51,7 @@ export const EditLanguage = (props: EditLanguageProps) => {
           )}
 
           <LanguageForm
-            initialValues={{locale: language.locale, name: language.name}}
+            initialValues={{ locale: language.data.locale, name: language.data.name }}
             submitFn={handleSubmit}
             loading={updateMutation.isPending}
             submitTitle="Сохранить"

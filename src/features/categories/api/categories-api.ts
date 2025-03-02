@@ -1,15 +1,17 @@
 import { http } from '@/shared/config/http'
 import {
+  ResponseWithData,
   ResponseWithMessage,
   ResponseWithPagination,
 } from '@/shared/types/http'
 import { ListParams } from '@/shared/types/list-params'
-import { CategoryBody, DynamicDataItem } from '../types/categories'
-import { FieldWithLanguages } from '@/features/languages/types/field-with-langagues'
+import { Categories, CategoryBody } from '../types/categories'
+
+import { SelectType } from '@/shared/types/select-type'
 
 export const categoriesApi = {
   getAll: async (params: ListParams) => {
-    const { data } = await http<ResponseWithPagination<DynamicDataItem[]>>(
+    const { data } = await http<ResponseWithPagination<Categories[]>>(
       '/category',
       { params }
     )
@@ -18,13 +20,13 @@ export const categoriesApi = {
   },
 
   list: async () => {
-    const { data } = await http<DynamicDataItem[]>('/category/all')
+    const { data } = await http<ResponseWithData<SelectType[]>>('/category/all')
 
     return data
   },
 
   getOne: async (id: number) => {
-    const { data } = await http<FieldWithLanguages>(`/category/${id}`)
+    const { data } = await http<ResponseWithData<Categories>>(`/category/${id}`)
 
     return data
   },

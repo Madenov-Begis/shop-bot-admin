@@ -42,7 +42,7 @@ export const MainLayout = () => {
         </Drawer>
         <Sidebar />
       </AppShell.Navbar>
-      <AppShell.Main>
+      <AppShell.Main pb={40}>
         <Suspense
           fallback={
             <Center>

@@ -32,11 +32,9 @@ export const UpdateProduct = () => {
 
     if (typeof data.image[0] !== 'string') formData.set('image', data.image[0])
 
-    formData.set('status', data.status ? '1' : '0')
+    formData.set('is_active', data.is_active ? '1' : '0')
 
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-expect-error
       await updateMutation.mutateAsync({ id, body: formData })
       navigate('/products')
     } catch (error) {
@@ -72,12 +70,12 @@ export const UpdateProduct = () => {
 
           <ProductForm
             initialValues={{
-              description: product.description,
-              category_id: String(product.category_d),
-              image: [product.image],
-              price: product.price,
-              title: product.title,
-              status: Boolean(product.status),
+              description: product.data.description,
+              category_id: String(product.data.category.id.toString()),
+              image: [product.data.image],
+              price: +product.data.price,
+              title: product.data.name,
+              is_active: product.data.is_active,
             }}
             submitFn={handleSubmit}
             loading={updateMutation.isPending}

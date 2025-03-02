@@ -65,7 +65,7 @@ export const LanguagesList = () => {
 
   return (
     <Table
-      data={languages?.data ?? []}
+      data={languages?.data.data ?? []}
       columns={columns}
       onUpdate={handleUpdate}
       onDelete={handleDelete}
@@ -83,7 +83,7 @@ export const LanguagesList = () => {
         setGlobalFilter(value ?? '')
       }}
       onPaginationChange={setPagination}
-      rowCount={languages?.count}
+      rowCount={languages?.data.count}
     />
   )
 }
